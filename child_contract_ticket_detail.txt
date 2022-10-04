@@ -829,7 +829,7 @@ null as "Link to Next REN Opportunity",
 null as "Link to Old REN Opportunity",
 fields."1626" as "Car_Rep_Contact"
  
- FROM (select * from ticket_detail where  ticket_category_option_id in (4) and id in ( %s )) td
+ FROM (select * from ticket_detail where  ticket_category_option_id in (4)) td
     LEFT JOIN ticket_link tl ON tl.source_ticket_id = td.id  
      LEFT JOIN ticket_detail t ON t.id = tl.destination_ticket_id and t.ticket_category_option_id in (1569)	
      LEFT JOIN brand b ON b.org_brand_id = t.org_brand_id
