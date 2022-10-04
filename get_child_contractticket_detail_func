@@ -1,0 +1,882 @@
+-- FUNCTION: public.get_child_contractticket_detail(character varying)
+
+-- DROP FUNCTION IF EXISTS public.get_child_contractticket_detail(character varying);
+
+CREATE OR REPLACE FUNCTION public.get_child_contractticket_detail(
+	ticketid character varying)
+    RETURNS TABLE(parentid bigint, id bigint, org_id integer, brand_id integer, org_brand_id integer, brand_name text, "Opportunity Name" text, is_visible_in_customer_portal boolean, requested_by bigint, requester text, assigned_to_user_id bigint, assignee text, "AR Rep" text, assigned_to_group_id integer, "group" text, contact_group_id bigint, contact_group text, resolution_due_on timestamp with time zone, ticket_status_id integer, status text, ticket_source_id integer, source text, update_count integer, note_count integer, attachment_count integer, work_log_count integer, total_time_logged integer, total_billable_time_logged integer, first_response_due_on timestamp with time zone, next_response_due_on timestamp with time zone, last_replied_on timestamp with time zone, last_replied_by_id bigint, last_replied_by text, last_replied_by_user_type_id integer, last_replied_by_user_type text, closed_on timestamp with time zone, closed_by bigint, closed_by_name text, created_on timestamp with time zone, created_by bigint, creator text, last_modified_on timestamp with time zone, last_modified_by bigint, "Last Modified By" text, is_spam boolean, is_active boolean, tsv tsvector, is_resolution_date_modified boolean, last_status_changed_on timestamp with time zone, is_first_response_updated boolean, ticket_type_option_id bigint, ticket_category_option_id bigint, ticket_priority_id integer, priority text, "Account Name" text, subject text, type text, category text, email character varying, "OpportunityOwner" text, time_spent bigint, unique_external_reference_id text, agentid bigint, notes text, isnotesprivate boolean, notetype text, assigned text, cf_amount numeric, cf_opp_dt_order_id character varying, cf_link_to_bold_order character varying, cf_expected_payment_date date, cf_group_car_rep character varying, cf_secondary_lead_source character varying, cf_contract_renewal_date date, cf_contract_renewal_amount numeric, cf_reinstate_reason text, cf_last_crr_rep_contact date, cf_country text, cf_date_reviewed date, cf_nonrenewal_reason text, cf_cleared_by_jv boolean, cf_order_sheet_status text, cf_case_number character varying, cf_downloaded_date timestamp without time zone, cf_key_order_issue text, cf_term_12_months boolean, cf_date_moved_to_not_renewing date, cf_adobe_sign_exp_date date, cf_next_cl_contact date, cf__of_years_in_next_payment_term numeric, cf__of_years_in_previous_payment_term numeric, cf_ap_processed_alliance_fee date, cf_days_to_pay_alliance_partner integer, cf_alliance_fee_tier text, cf_alliance_partner_order_status text, cf_biz_dev_reviewed date, cf_csr_returned_for_correction date, cf_dt_expiration_date timestamp without time zone, cf_original_license_type text, cf_opp_alliance_partner text, cf_return_details text, cf_original_closedwon_date timestamp without time zone, cf_current_subscription_term character varying, cf_last_customer_contact date, cf_opportunity_name character varying, cf_lead_source character varying, cf_next_ar_contact date, cf_opp_presale_contract_request boolean, cf_end_date date, cf_ren_audit_review text, cf_counsel_reviewed text, cf_flagged_by_mahas_team date, cf_submitted_for_approval timestamp without time zone, cf_order_reviewed_by integer[], cf_group_account_name character varying, cf_payment_frequency text, cf_submitted_to_counsel_review date, cf_2nd_contact_date timestamp without time zone, cf_case_type text, cf_return_notes character varying, cf_engagement_status text, cf_product text, cf_review_link character varying, cf_contract_license_ordered text, cf_ar_license_ordered text, cf_opp_has_problematic_pricing boolean, cf_renewal_amount_this_year numeric, cf_days_since_contact character varying, cf_my_call_list_est text, cf_order_sheet_name character varying, cf_date_signed_by_syncfusion timestamp without time zone, cf_invoice_due_date timestamp without time zone, cf_return_identified_by text, cf_contract_sent timestamp without time zone, cf_paralegal_contracts_to_returncancel timestamp without time zone, cf_total_contract_amount numeric, cf_order_sheet_incomplete timestamp without time zone, cf_salescr_action_needed timestamp without time zone, cf_link_to_return_opportunity character varying, cf_company character varying, cf_opportunity_category character varying, cf_product_or_plan text, cf_revenue_type text, cf_call_country text, cf_last_renewal_order_id character varying, cf_demo_scheduled timestamp without time zone, cf_reason_lost_comments character varying, cf_opportunity_source character varying, cf_download_country character varying, cf_reason_lost text, cf_alliance_partner_status text, cf_customerid character varying, cf_no_of_order_sheets_in_opp character varying, cf_previous_dt_order_amount numeric, cf_manager_at_time_of_sale character varying, cf_department character varying, cf_known_company_url character varying, cf_secondary_ap_contact character varying, cf_is_invoice_collectible text, cf_problematic_pricing_acct timestamp without time zone, cf_tier_1_country_code character varying, cf_renewal_status text, cf_renewal_confirmation text, cf_contract_reviewed text, cf_reason_returned text, cf_resolution text, cf_po_obtained_legal timestamp without time zone, cf_contact_lead_source character varying, cf_salescrr_issue_resolved timestamp without time zone, cf_primary_ap_contact character varying, cf_visual_compliance_run_by text, cf_crr_rep text, cf_crr_corrections_required character varying, cf_returnrebook boolean, cf_payment_confirmation_attached text, cf_tier_1_country_name character varying, cf_1st_contact_date timestamp without time zone, cf_email character varying, cf_submitted_for_processing timestamp without time zone, cf_rejected_to_rep timestamp without time zone, cf_returned_for_corrections timestamp without time zone, cf_order_sheet_processed timestamp without time zone, cf_record_type text, cf_upgrade_dollar_amount numeric, cf_total_sale_amount numeric, cf_month_one_amount numeric, cf_month_two_amount numeric, cf_month_three_amount numeric, cf_month_four_amount numeric, cf_month_five_amount numeric, cf_month_six_amount numeric, cf_month_seven_amount numeric, cf_month_eight_amount numeric, cf_month_nine_amount numeric, cf_month_ten_amount numeric, cf_month_eleven_amount numeric, cf_month_twelve_amount numeric, cf_fee_to_alliance_partner numeric, cf_contract_status text, cf_3rd_contact_date timestamp without time zone, cf_payment_method text, cf_bold_commissionable_amount numeric, cf_customer_invoice_details text, cf_stripe_order boolean, cf_year_one_contract_amount numeric, cf_case_resolution text, cf_sales_admin_correction_requested integer[], cf_date_agreement_effective timestamp without time zone, cf_date_agreement_expires date, cf_date_sent_to_customer timestamp without time zone, cf_date_estimate_sent_to_customer timestamp without time zone, cf_date_signed_by_customer timestamp without time zone, cf_case_car_rep character varying, cf_crr_split_amount numeric, cf_follow_up_date timestamp without time zone, cf_outstanding_amount numeric, cf_amount_collected_by_legal numeric, cf_payment_outcome text, cf_invoice_sent timestamp without time zone, cf_contract_complete_or_closed timestamp without time zone, cf_reason_for_no_contract character varying, cf_payment_obtained_legal timestamp without time zone, cf_review_site text, cf_order_info_needed integer[], cf_collection_legal_status text, cf_last_collections_contact timestamp without time zone, cf_total_invoice_amount numeric, cf_salescr_action_type text, cf_case_description character varying, cf_date_sent_to_jv timestamp without time zone, cf_date_fully_executed timestamp without time zone, cf_90_days_support timestamp without time zone, cf_weekly_call_day text, cf_last_ar_contact timestamp without time zone, cf_related_opp_account_name character varying, cf_related_opp_close_date timestamp without time zone, cf_on_hold_details character varying, cf_responsible_for_inv text, cf_due_date timestamp without time zone, cf_status text, cf_dt_order_id character varying, cf_salescrr_invoice_issue timestamp without time zone, cf_days_suppport_remaining numeric, cf_alliance_partner character varying, cf_manager character varying, cf_visual_compliance_run timestamp without time zone, cf_syncfusion_sales_rep character varying, cf_absolute_revenue character varying, cf_car_rep text, cf_next_contact_date timestamp without time zone, cf_opportunity_amount numeric, cf_task_subtype text, cf_day_log text, cf_time_activity_logged timestamp without time zone, cf_call_type text, cf_call_result character varying, cf_license_ordered text, cf_presale_contract_request timestamp without time zone, cf_assigned_to character varying, cf_ar_status text, cf_date_sent_to_legal timestamp without time zone, cf_order_entered date, cf_verified_return_in_dt boolean, cf_confirmed_order_csr date, cf_date_order_closed_paidret timestamp without time zone, cf_discount numeric, cf_email_subject character varying, cf_salescrr_issue_type text, cf_sales_rep_split_amount character varying, cf_cg_billing_postal_code character varying, cf_cg_known_company_url character varying, cf_problematic_pricing_opps boolean, cf_cg_billing_street character varying, cf_cg_billing_city character varying, cf_contact_license_type text, cf_group_billing_country character varying, cf_order_entered_by text, cf_reason_for_owner_change integer, cf_acct_has_problematic_pricing timestamp without time zone, cf_opp_acct_has_problematic_pricing timestamp without time zone, cf_channel text, cf_csr_confirmed_alliance_order timestamp without time zone, cf_submitted_for_bd_review timestamp without time zone, contactname character varying, "Invoice Age" double precision, stage text, "Amount After Discount" numeric, "Days To Expiration" double precision, "Days To Payment" double precision, "Days To Payment 2" double precision, "Days To Invoice Payment" double precision, "Days not renewing to closed" double precision, "Sales Admin Review Days" double precision, "Close Date to Processed" double precision, "Days to Process" double precision, "Close to Final CRRB Checks" double precision, "Close vs. Exp date" double precision, "Days Since Close Date" double precision, "Days Open" double precision, "Absolute Close Won Date" timestamp with time zone, "Upgrade Amount" numeric, "When was Alliance Partner Paid" text, "Opportunity Age" double precision, "Bold Team" text, "Collections or AR?" text, "Call time" text, "Follow Up Type" text, "Contract Result" text, "Eligible for Contract" text, "Contract" text, "CRRB Processing Time" text, "Days To Final CRRB Check" text, "Days to Process(str)" text, "Invoice Age(Str)" text, "Close to payment" text, "Eligible Date to Close" date, "DT Order Link" text, "Tier 1 Region" integer, "Adjusted Projected REN" numeric, "Percent Invoice Paid" numeric, "Days to Submit Order" double precision, "Days to Submit Order_bucket" text, "Annualized Revenue" double precision, "Closed By Expiration" text, "Link to Next REN Opportunity" character varying, "Link to Old REN Opportunity" character varying, cf_ren_contract_notes character varying, cf_collections_legal_notes character varying, cf_ar_notes character varying, cf_contract_retrieval_notes character varying, cf_comments character varying, cf_order_evaluation_notes character varying, cf_counsel_order_notes character varying, cf_notes_from_sales_leadership character varying, cf_notes_to_ar_manager character varying, cf_po_notes_legal character varying, cf_collections_correspondence character varying, cf_admin_internal_notes character varying, cf_paralegal_notes character varying, cf_rep_notes character varying, "Opportunity Owner Designation" character varying, "Opportunity Owner Role" character varying, "Opportunity Owner Department" character varying, "Opportunity Owner Workstation" character varying, "Opportunity Owner Division" character varying, "Opportunity Owner : Active" character varying, "Opportunity Owner : Manager" text, isreportingpersonasmaanager integer, "Opportunity Owner : Reporting Person" text, "User End Date" timestamp without time zone, "Opportunity Owner IsActive" boolean, "Car_Rep_Contact" character varying, "sales/cr-notes-with-legal" character varying, "Counsel-Notes" character varying, "Closed-Lost-Qualification-Notes" character varying, "SE-Notes" character varying, "CR-Notes" character varying, "Sales-Leadership-Notes" character varying, "About-This-Opportunity" character varying, "contract-notes" character varying, "project-notes" character varying, "case-comments" character varying, "project-name-cst" character varying) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+
+begin
+	return query 
+
+SELECT ticket_detail.parentid,ticket_detail.id,
+    ticket_detail.org_id,
+    ticket_detail.brand_id,
+    ticket_detail.org_brand_id,
+    ticket_detail.brand_name,
+    ticket_detail."Opportunity Name",
+    ticket_detail.is_visible_in_customer_portal,
+    ticket_detail.requested_by,
+    ticket_detail.requester,
+    ticket_detail.assigned_to_user_id,
+    ticket_detail.assignee,
+    ticket_detail."AR Rep",
+    ticket_detail.assigned_to_group_id,
+    ticket_detail."group",
+    ticket_detail.contact_group_id,
+    ticket_detail.contact_group,
+    ticket_detail.resolution_due_on,
+    ticket_detail.ticket_status_id,
+    ticket_detail.status,
+    ticket_detail.ticket_source_id,
+    ticket_detail.source,
+    ticket_detail.update_count,
+    ticket_detail.note_count,
+    ticket_detail.attachment_count,
+    ticket_detail.work_log_count,
+    ticket_detail.total_time_logged,
+    ticket_detail.total_billable_time_logged,
+    ticket_detail.first_response_due_on,
+    ticket_detail.next_response_due_on,
+    ticket_detail.last_replied_on,
+    ticket_detail.last_replied_by_id,
+    ticket_detail.last_replied_by,
+    ticket_detail.last_replied_by_user_type_id,
+    ticket_detail.last_replied_by_user_type,
+    ticket_detail.closed_on,
+    ticket_detail.closed_by,
+    ticket_detail.closed_by_name,
+    ticket_detail.created_on,
+    ticket_detail.created_by,
+    ticket_detail.creator,
+    ticket_detail.last_modified_on,
+    ticket_detail.last_modified_by,
+    ticket_detail."Last Modified By",
+    ticket_detail.is_spam,
+    ticket_detail.is_active,
+    ticket_detail.tsv,
+    ticket_detail.is_resolution_date_modified,
+    ticket_detail.last_status_changed_on,
+    ticket_detail.is_first_response_updated,
+    ticket_detail.ticket_type_option_id,
+    ticket_detail.ticket_category_option_id,
+    ticket_detail.ticket_priority_id,
+    ticket_detail.priority,
+    ticket_detail."Account Name",
+    ticket_detail.subject,
+    ticket_detail.type,
+    ticket_detail.category,
+    ticket_detail.email,
+    ticket_detail."OpportunityOwner",
+    ticket_detail.time_spent,
+    ticket_detail.unique_external_reference_id,
+    ticket_detail.agentid,
+    notes.notes::text,
+    ticket_detail.isnotesprivate,
+    ticket_detail.notetype,
+    ticket_detail.assigned,
+    ticket_detail.cf_amount,
+    ticket_detail.cf_opp_dt_order_id,
+    ticket_detail.cf_link_to_bold_order,
+    ticket_detail.cf_expected_payment_date,
+    ticket_detail.cf_group_car_rep,
+    ticket_detail.cf_secondary_lead_source,
+    ticket_detail.cf_contract_renewal_date,
+    ticket_detail.cf_contract_renewal_amount,
+    ticket_detail.cf_reinstate_reason,
+    ticket_detail.cf_last_crr_rep_contact,
+    ticket_detail.cf_country,
+    ticket_detail.cf_date_reviewed,
+    ticket_detail.cf_nonrenewal_reason,
+    ticket_detail.cf_cleared_by_jv,
+    ticket_detail.cf_order_sheet_status,
+    ticket_detail.cf_case_number,
+    ticket_detail.cf_downloaded_date,
+    ticket_detail.cf_key_order_issue,
+    ticket_detail.cf_term_12_months,
+    ticket_detail.cf_date_moved_to_not_renewing,
+    ticket_detail.cf_adobe_sign_exp_date,
+    ticket_detail.cf_next_cl_contact,
+    ticket_detail.cf__of_years_in_next_payment_term,
+    ticket_detail.cf__of_years_in_previous_payment_term,
+    ticket_detail.cf_ap_processed_alliance_fee,
+    ticket_detail.cf_days_to_pay_alliance_partner,
+    ticket_detail.cf_alliance_fee_tier,
+    ticket_detail.cf_alliance_partner_order_status,
+    ticket_detail.cf_biz_dev_reviewed,
+    ticket_detail.cf_csr_returned_for_correction,
+    ticket_detail.cf_dt_expiration_date,
+    ticket_detail.cf_original_license_type,
+    ticket_detail.cf_opp_alliance_partner,
+    ticket_detail.cf_return_details,
+    ticket_detail.cf_original_closedwon_date,
+    ticket_detail.cf_current_subscription_term,
+    ticket_detail.cf_last_customer_contact,
+    ticket_detail.cf_opportunity_name,
+    ticket_detail.cf_lead_source,
+    ticket_detail.cf_next_ar_contact,
+    ticket_detail.cf_opp_presale_contract_request,
+    ticket_detail.cf_end_date,
+    ticket_detail.cf_ren_audit_review,
+    ticket_detail.cf_counsel_reviewed,
+    ticket_detail.cf_flagged_by_mahas_team,
+    ticket_detail.cf_submitted_for_approval,
+    ticket_detail.cf_order_reviewed_by,
+    ticket_detail.cf_group_account_name,
+    ticket_detail.cf_payment_frequency,
+    ticket_detail.cf_submitted_to_counsel_review,
+    ticket_detail.cf_2nd_contact_date,
+    ticket_detail.cf_case_type,
+    ticket_detail.cf_return_notes,
+    ticket_detail.cf_engagement_status,
+    ticket_detail.cf_product,
+    ticket_detail.cf_review_link,
+    ticket_detail.cf_contract_license_ordered,
+    ticket_detail.cf_ar_license_ordered,
+    ticket_detail.cf_opp_has_problematic_pricing,
+    ticket_detail.cf_renewal_amount_this_year,
+    ticket_detail.cf_days_since_contact,
+    ticket_detail.cf_my_call_list_est,
+    ticket_detail.cf_order_sheet_name,
+    ticket_detail.cf_date_signed_by_syncfusion,
+    ticket_detail.cf_invoice_due_date,
+    ticket_detail.cf_return_identified_by,
+    ticket_detail.cf_contract_sent,
+    ticket_detail.cf_paralegal_contracts_to_returncancel,
+    ticket_detail.cf_total_contract_amount,
+    ticket_detail.cf_order_sheet_incomplete,
+    ticket_detail.cf_salescr_action_needed,
+    ticket_detail.cf_link_to_return_opportunity,
+    ticket_detail.cf_company,
+    ticket_detail.cf_opportunity_category,
+    ticket_detail.cf_product_or_plan,
+    ticket_detail.cf_revenue_type,
+    ticket_detail.cf_call_country,
+    ticket_detail.cf_last_renewal_order_id,
+    ticket_detail.cf_demo_scheduled,
+    ticket_detail.cf_reason_lost_comments,
+    ticket_detail.cf_opportunity_source,
+    ticket_detail.cf_download_country,
+    ticket_detail.cf_reason_lost,
+    ticket_detail.cf_alliance_partner_status,
+    ticket_detail.cf_customerid,
+    ticket_detail.cf_no_of_order_sheets_in_opp,
+    ticket_detail.cf_previous_dt_order_amount,
+    ticket_detail.cf_manager_at_time_of_sale,
+    ticket_detail.cf_department,
+    ticket_detail.cf_known_company_url,
+    ticket_detail.cf_secondary_ap_contact,
+    ticket_detail.cf_is_invoice_collectible,
+    ticket_detail.cf_problematic_pricing_acct,
+    ticket_detail.cf_tier_1_country_code,
+    ticket_detail.cf_renewal_status,
+    ticket_detail.cf_renewal_confirmation,
+    ticket_detail.cf_contract_reviewed,
+    ticket_detail.cf_reason_returned,
+    ticket_detail.cf_resolution,
+    ticket_detail.cf_po_obtained_legal,
+    ticket_detail.cf_contact_lead_source,
+    ticket_detail.cf_salescrr_issue_resolved,
+    ticket_detail.cf_primary_ap_contact,
+    ticket_detail.cf_visual_compliance_run_by,
+    ticket_detail.cf_crr_rep,
+    ticket_detail.cf_crr_corrections_required,
+    ticket_detail.cf_returnrebook,
+    ticket_detail.cf_payment_confirmation_attached,
+    ticket_detail.cf_tier_1_country_name,
+    ticket_detail.cf_1st_contact_date,
+    ticket_detail.cf_email,
+    ticket_detail.cf_submitted_for_processing,
+    ticket_detail.cf_rejected_to_rep,
+    ticket_detail.cf_returned_for_corrections,
+    ticket_detail.cf_order_sheet_processed,
+    ticket_detail.cf_record_type,
+    ticket_detail.cf_upgrade_dollar_amount,
+    ticket_detail.cf_total_sale_amount,
+    ticket_detail.cf_month_one_amount,
+    ticket_detail.cf_month_two_amount,
+    ticket_detail.cf_month_three_amount,
+    ticket_detail.cf_month_four_amount,
+    ticket_detail.cf_month_five_amount,
+    ticket_detail.cf_month_six_amount,
+    ticket_detail.cf_month_seven_amount,
+    ticket_detail.cf_month_eight_amount,
+    ticket_detail.cf_month_nine_amount,
+    ticket_detail.cf_month_ten_amount,
+    ticket_detail.cf_month_eleven_amount,
+    ticket_detail.cf_month_twelve_amount,
+    ticket_detail.cf_fee_to_alliance_partner,
+    ticket_detail.cf_contract_status,
+    ticket_detail.cf_3rd_contact_date,
+    ticket_detail.cf_payment_method,
+    ticket_detail.cf_bold_commissionable_amount,
+    ticket_detail.cf_customer_invoice_details,
+    ticket_detail.cf_stripe_order,
+    ticket_detail.cf_year_one_contract_amount,
+    ticket_detail.cf_case_resolution,
+    ticket_detail.cf_sales_admin_correction_requested,
+    ticket_detail.cf_date_agreement_effective,
+    ticket_detail.cf_date_agreement_expires,
+    ticket_detail.cf_date_sent_to_customer,
+    ticket_detail.cf_date_estimate_sent_to_customer,
+    ticket_detail.cf_date_signed_by_customer,
+    ticket_detail.cf_case_car_rep,
+    ticket_detail.cf_crr_split_amount,
+    ticket_detail.cf_follow_up_date,
+    ticket_detail.cf_outstanding_amount,
+    ticket_detail.cf_amount_collected_by_legal,
+    ticket_detail.cf_payment_outcome,
+    ticket_detail.cf_invoice_sent,
+    ticket_detail.cf_contract_complete_or_closed,
+    ticket_detail.cf_reason_for_no_contract,
+    ticket_detail.cf_payment_obtained_legal,
+    ticket_detail.cf_review_site,
+    ticket_detail.cf_order_info_needed,
+    ticket_detail.cf_collection_legal_status,
+    ticket_detail.cf_last_collections_contact,
+    ticket_detail.cf_total_invoice_amount,
+    ticket_detail.cf_salescr_action_type,
+    ticket_detail.cf_case_description,
+    ticket_detail.cf_date_sent_to_jv,
+    ticket_detail.cf_date_fully_executed,
+    ticket_detail.cf_90_days_support,
+    ticket_detail.cf_weekly_call_day,
+    ticket_detail.cf_last_ar_contact,
+    ticket_detail.cf_related_opp_account_name,
+    ticket_detail.cf_related_opp_close_date,
+    ticket_detail.cf_on_hold_details,
+    ticket_detail.cf_responsible_for_inv,
+    ticket_detail.cf_due_date,
+    ticket_detail.cf_status,
+    ticket_detail.cf_dt_order_id,
+    ticket_detail.cf_salescrr_invoice_issue,
+    ticket_detail.cf_days_suppport_remaining,
+    ticket_detail.cf_alliance_partner,
+    ticket_detail.cf_manager,
+    ticket_detail.cf_visual_compliance_run,
+    ticket_detail.cf_syncfusion_sales_rep,
+    ticket_detail.cf_absolute_revenue,
+    ticket_detail.cf_car_rep,
+    ticket_detail.cf_next_contact_date,
+    ticket_detail.cf_opportunity_amount,
+    ticket_detail.cf_task_subtype,
+    ticket_detail.cf_day_log,
+    ticket_detail.cf_time_activity_logged,
+    ticket_detail.cf_call_type,
+    ticket_detail.cf_call_result,
+    ticket_detail.cf_license_ordered,
+    ticket_detail.cf_presale_contract_request,
+    ticket_detail.cf_assigned_to,
+    ticket_detail.cf_ar_status,
+    ticket_detail.cf_date_sent_to_legal,
+    ticket_detail.cf_order_entered,
+    ticket_detail.cf_verified_return_in_dt,
+    ticket_detail.cf_confirmed_order_csr,
+    ticket_detail.cf_date_order_closed_paidret,
+    ticket_detail.cf_discount,
+    ticket_detail.cf_email_subject,
+    ticket_detail.cf_salescrr_issue_type,
+    ticket_detail.cf_sales_rep_split_amount,
+    ticket_detail.cf_cg_billing_postal_code,
+    ticket_detail.cf_cg_known_company_url,
+    ticket_detail.cf_problematic_pricing_opps,
+    ticket_detail.cf_cg_billing_street,
+    ticket_detail.cf_cg_billing_city,
+    ticket_detail.cf_contact_license_type,
+    ticket_detail.cf_group_billing_country,
+    ticket_detail.cf_order_entered_by,
+    ticket_detail.cf_reason_for_owner_change,
+    ticket_detail.cf_acct_has_problematic_pricing,
+    ticket_detail.cf_opp_acct_has_problematic_pricing,
+    ticket_detail.cf_channel,
+    ticket_detail.cf_csr_confirmed_alliance_order,
+    ticket_detail.cf_submitted_for_bd_review,
+    ticket_detail.contactname,
+    ticket_detail."Invoice Age",
+    ticket_detail.stage,
+    ticket_detail."Amount After Discount",
+    ticket_detail."Days To Expiration",
+    ticket_detail."Days To Payment",
+    ticket_detail."Days To Payment 2",
+    ticket_detail."Days To Invoice Payment",
+    ticket_detail."Days not renewing to closed",
+    ticket_detail."Sales Admin Review Days",
+    ticket_detail."Close Date to Processed",
+    ticket_detail."Days to Process",
+    ticket_detail."Close to Final CRRB Checks",
+    ticket_detail."Close vs. Exp date",
+    ticket_detail."Days Since Close Date",
+    ticket_detail."Days Open",
+    ticket_detail."Absolute Close Won Date",
+    ticket_detail."Upgrade Amount",
+    ticket_detail."When was Alliance Partner Paid",
+    ticket_detail."Opportunity Age",
+    ticket_detail."Bold Team",
+    ticket_detail."Collections or AR?",
+    ticket_detail."Call time",
+    ticket_detail."Follow Up Type",
+    ticket_detail."Contract Result",
+    ticket_detail."Eligible for Contract",
+    ticket_detail."Contract",
+    ticket_detail."CRRB Processing Time",
+    ticket_detail."Days To Final CRRB Check",
+    ticket_detail."Days to Process(str)",
+    ticket_detail."Invoice Age(Str)",
+    ticket_detail."Close to payment",
+    ticket_detail."Eligible Date to Close",
+    ticket_detail."DT Order Link",
+    ticket_detail."Tier 1 Region",
+    ticket_detail."Adjusted Projected REN",
+    ticket_detail."Percent Invoice Paid",
+    ticket_detail."Days to Submit Order",
+    ticket_detail."Days to Submit Order_bucket",
+    ticket_detail."Annualized Revenue",
+    ticket_detail."Closed By Expiration",
+    ticket_detail."Link to Next REN Opportunity",
+    ticket_detail."Link to Old REN Opportunity",
+    notes."REN-Contract-Notes" AS cf_ren_contract_notes,
+    notes."collections-legal-notes" AS cf_collections_legal_notes,
+    notes."ar-notes" AS cf_ar_notes,
+    notes."contract-retrieval-notes" AS cf_contract_retrieval_notes,
+    notes."Comments" AS cf_comments,
+    notes."Order-Evaluation-Notes" AS cf_order_evaluation_notes,
+    notes."Counsel-Notes" AS cf_counsel_order_notes,
+    notes."notes-from-sales-leadership" AS cf_notes_from_sales_leadership,
+    notes."Manager-Notes" AS cf_notes_to_ar_manager,
+    notes."po-notes-legal" AS cf_po_notes_legal,
+    notes."collections-correspondence" AS cf_collections_correspondence,
+    notes."admin-internal-notes" AS cf_admin_internal_notes,
+    notes."Paralegal-Notes" AS cf_paralegal_notes,
+    notes."Rep-Notes" AS cf_rep_notes,
+		rdu."Opportunity Owner Designation",
+		rdu."Opportunity Owner Role", 
+		rdu."Opportunity Owner Department",
+		rdu."Opportunity Owner Workstation",
+		rdu."Opportunity Owner Division",
+		rdu."Opportunity Owner : Active",
+		rdu."Opportunity Owner : Manager", 
+		0 as isreportingpersonasmaanager, 
+		rdu."Opportunity Owner : Reporting Person",
+		rdu."User End Date", 
+		rdu."Opportunity Owner IsActive",
+		ticket_detail."Car_Rep_Contact",
+		notes."sales/cr-notes-with-legal"  as "sales/cr-notes-with-legal",
+	notes."Counsel-Notes" as "Counsel-Notes",
+	notes."Closed-Lost-Qualification-Notes" ,
+	notes."SE-Notes",
+	notes."CR-Notes",
+	notes."Sales-Leadership-Notes",
+	notes."About-This-Opportunity",
+	notes."contract-notes",
+	notes."project-notes",
+	notes."case-comments",
+	
+	notes."project-name-cst"
+   FROM dblink('host=34.86.108.93 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538'::text,
+			   format('SELECT td.id as parentid,t.id,
+    t.org_id,
+    t.brand_id,
+    t.org_brand_id,
+    b.brand_name,
+    t.title AS "Opportunity Name",
+    t.is_visible_in_customer_portal,
+    t.requested_by,
+    requester.name AS requester,
+    t.assigned_to_user_id,
+    assignee.name AS assignee,
+	assignee.name as "AR Rep",
+    t.assigned_to_group_id,
+    aug.name AS "group",
+    t.contact_group_id,
+    cg.name AS contact_group,
+    t.resolution_due_on,
+    t.ticket_status_id,
+    tst.label_for_agent AS status,
+    t.ticket_source_id,
+    tso.name AS source,
+    t.update_count,
+    t.note_count,
+    t.attachment_count,
+    t.work_log_count,
+    t.total_time_logged,
+    t.total_billable_time_logged,
+    t.first_response_due_on,
+    t.next_response_due_on,
+    t.last_replied_on,
+    t.last_replied_by_id,
+    replied.name AS last_replied_by,
+    t.last_replied_by_user_type_id,
+    rut.name AS last_replied_by_user_type,
+    t.closed_on,
+    t.closed_by,
+    closed.name AS closed_by_name,
+    t.created_on,
+    t.created_by,
+    creator.name AS creator,
+    t.last_modified_on,
+    t.last_modified_by,
+    modifier.name AS "Last Modified By",
+    t.is_spam,
+    t.is_active,
+    t.tsv,
+    t.is_resolution_date_modified,
+    t.last_status_changed_on,
+    t.is_first_response_updated,
+    t.ticket_type_option_id,
+    t.ticket_category_option_id,
+    t.ticket_priority_id,
+    tp.name AS priority,
+    cg.name AS "Account Name",
+    t.title AS subject,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = t.ticket_type_option_id) AS type,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = t.ticket_category_option_id) AS category,
+    owner.email,
+    owner.name AS "OpportunityOwner",
+    timelog.time_spent,
+    t.unique_external_reference_id,
+    agent.id AS agentid,
+    tu.description AS notes,
+    tu.is_private AS isnotesprivate,
+    tut.name AS notetype,
+	creator.name AS Assigned,
+    fields."1001" AS cf_amount,
+    fields."1522" AS cf_opp_dt_order_id,
+    fields."1489" AS cf_link_to_bold_order,
+    fields."1490" AS cf_expected_payment_date,
+    fields."1336" AS cf_group_car_rep,
+    fields."1540" AS cf_secondary_lead_source,
+    fields."1491" AS cf_contract_renewal_date,
+    fields."1492" AS cf_contract_renewal_amount,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1493") AS cf_reinstate_reason,
+    fields."1494" AS cf_last_crr_rep_contact,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1092") AS cf_country,
+    fields."1497" AS cf_date_reviewed,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1063") AS cf_nonrenewal_reason,
+    fields."1498" AS cf_cleared_by_jv,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1141") AS cf_order_sheet_status,
+    fields."1503" AS cf_case_number,
+    fields."1093" AS cf_downloaded_date,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1499") AS cf_key_order_issue,
+    fields."1500" AS cf_term_12_months,
+    fields."1495" AS cf_date_moved_to_not_renewing,
+    fields."1596" AS cf_adobe_sign_exp_date,
+    fields."1504" AS cf_next_cl_contact,
+    fields."1618" AS cf__of_years_in_next_payment_term,
+    fields."1619" AS cf__of_years_in_previous_payment_term,
+    fields."1510" AS cf_ap_processed_alliance_fee,
+    fields."1623" AS cf_days_to_pay_alliance_partner,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1512") AS cf_alliance_fee_tier,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1513") AS cf_alliance_partner_order_status,
+    fields."1514" AS cf_biz_dev_reviewed,
+    fields."1515" AS cf_csr_returned_for_correction,
+    fields."1066" AS cf_dt_expiration_date,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1052") AS cf_original_license_type,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1453") AS cf_opp_alliance_partner,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1299") AS cf_return_details,
+    fields."1301" AS cf_original_closedwon_date,
+    fields."1501" AS cf_current_subscription_term,
+    fields."1507" AS cf_last_customer_contact,
+    fields."1125" AS cf_opportunity_name,
+    fields."1366" AS cf_lead_source,
+    fields."1508" AS cf_next_ar_contact,
+    fields."1516" AS cf_opp_presale_contract_request,
+    fields."1517" AS cf_end_date,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1519") AS cf_ren_audit_review,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1520") AS cf_counsel_reviewed,
+    fields."1521" AS cf_flagged_by_mahas_team,
+    fields."1151" AS cf_submitted_for_approval,
+    fields."1496" AS cf_order_reviewed_by,
+    fields."1373" AS cf_group_account_name,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1226") AS cf_payment_frequency,
+    fields."1509" AS cf_submitted_to_counsel_review,
+    fields."1384" AS cf_2nd_contact_date,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1248") AS cf_case_type,
+    fields."1300" AS cf_return_notes,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1388") AS cf_engagement_status,
+     fields."1593" AS cf_product,
+    fields."1400" AS cf_review_link,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1370") AS cf_contract_license_ordered,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1372") AS cf_ar_license_ordered,
+    fields."1480" AS cf_opp_has_problematic_pricing,
+    fields."1479" AS cf_renewal_amount_this_year,
+    fields."1483" AS cf_days_since_contact,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1009") AS cf_my_call_list_est,
+    fields."1485" AS cf_order_sheet_name,
+    fields."1259" AS cf_date_signed_by_syncfusion,
+    fields."1326" AS cf_invoice_due_date,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1310") AS cf_return_identified_by,
+    fields."1344" AS cf_contract_sent,
+    fields."1347" AS cf_paralegal_contracts_to_returncancel,
+    fields."1343" AS cf_total_contract_amount,
+    fields."1330" AS cf_order_sheet_incomplete,
+    fields."1338" AS cf_salescr_action_needed,
+    fields."1010" AS cf_link_to_return_opportunity,
+    fields."1139" AS cf_company,
+    fields."1542" AS cf_opportunity_category,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1111") AS cf_product_or_plan,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1005") AS cf_revenue_type,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1094") AS cf_call_country,
+    fields."1544" AS cf_last_renewal_order_id,
+    fields."1404" AS cf_demo_scheduled,
+    fields."1118" AS cf_reason_lost_comments,
+    fields."1108" AS cf_opportunity_source,
+  
+    fields."1543" AS cf_download_country,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1008") AS cf_reason_lost,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1025") AS cf_alliance_partner_status,
+    fields."1380" AS cf_customerid,
+    fields."1622" AS cf_no_of_order_sheets_in_opp,
+    fields."1068" AS cf_previous_dt_order_amount,
+    fields."1332" AS cf_manager_at_time_of_sale,
+    fields."1018" AS cf_department,
+    fields."1020" AS cf_known_company_url,
+    fields."1315" AS cf_secondary_ap_contact,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1318") AS cf_is_invoice_collectible,
+    fields."1065" AS cf_problematic_pricing_acct,
+    fields."1047" AS cf_tier_1_country_code,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1050") AS cf_renewal_status,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1060") AS cf_renewal_confirmation,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1051") AS cf_contract_reviewed,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1296") AS cf_reason_returned,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1021") AS cf_resolution,
+    fields."1320" AS cf_po_obtained_legal,
+    fields."1351" AS cf_contact_lead_source,
+    fields."1313" AS cf_salescrr_issue_resolved,
+    fields."1314" AS cf_primary_ap_contact,
+  
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1144") AS cf_visual_compliance_run_by,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1145") AS cf_crr_rep,
+    fields."1146" AS cf_crr_corrections_required,
+    fields."1147" AS cf_returnrebook,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1149") AS cf_payment_confirmation_attached,
+    fields."1048" AS cf_tier_1_country_name,
+    fields."1382" AS cf_1st_contact_date,
+    fields."1137" AS cf_email,
+    fields."1153" AS cf_submitted_for_processing,
+    fields."1155" AS cf_rejected_to_rep,
+    fields."1156" AS cf_returned_for_corrections,
+    fields."1160" AS cf_order_sheet_processed,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1046") AS cf_record_type,
+    fields."1179" AS cf_upgrade_dollar_amount,
+    fields."1180" AS cf_total_sale_amount,
+    fields."1174" AS cf_month_one_amount,
+	fields."1178" as cf_month_two_amount,
+
+fields."1182" as cf_month_three_amount,
+
+fields."1186" as cf_month_four_amount,
+
+fields."1190" as cf_month_five_amount,
+
+fields."1192" as cf_month_six_amount,
+
+fields."1195" as cf_month_seven_amount,
+
+fields."1198" as cf_month_eight_amount,
+
+fields."1204" as cf_month_nine_amount,
+
+fields."1206" as cf_month_ten_amount,
+
+fields."1207" as cf_month_eleven_amount,
+
+fields."1210" as cf_month_twelve_amount,
+
+    fields."1177" AS cf_fee_to_alliance_partner,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1337") AS cf_contract_status,
+    fields."1385" AS cf_3rd_contact_date,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1227") AS cf_payment_method,
+    fields."1240" AS cf_bold_commissionable_amount,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1232") AS cf_customer_invoice_details,
+    fields."1233" AS cf_stripe_order,
+    fields."1342" AS cf_year_one_contract_amount,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1247") AS cf_case_resolution,
+    fields."1238" AS cf_sales_admin_correction_requested,
+    fields."1249" AS cf_date_agreement_effective,
+    fields."1254" AS cf_date_agreement_expires,
+    fields."1255" AS cf_date_sent_to_customer,
+    fields."1256" AS cf_date_estimate_sent_to_customer,
+    fields."1257" AS cf_date_signed_by_customer,
+    fields."1250" AS cf_case_car_rep,
+    fields."1167" AS cf_crr_split_amount,
+    fields."1262" AS cf_follow_up_date,
+    fields."1328" AS cf_outstanding_amount,
+    fields."1322" AS cf_amount_collected_by_legal,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1323") AS cf_payment_outcome,
+    fields."1316" AS cf_invoice_sent,
+    fields."1345" AS cf_contract_complete_or_closed,
+    fields."1546" AS cf_reason_for_no_contract,
+    fields."1321" AS cf_payment_obtained_legal,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1399") AS cf_review_site,
+    fields."1334" AS cf_order_info_needed,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1317") AS cf_collection_legal_status,
+    fields."1319" AS cf_last_collections_contact,
+    fields."1327" AS cf_total_invoice_amount,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1340") AS cf_salescr_action_type,
+    fields."1263" AS cf_case_description,
+    fields."1260" AS cf_date_sent_to_jv,
+    fields."1261" AS cf_date_fully_executed,
+    fields."1268" AS cf_90_days_support,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1279") AS cf_weekly_call_day,
+    fields."1308" AS cf_last_ar_contact,
+    fields."1581" AS cf_related_opp_account_name,
+    fields."1281" AS cf_related_opp_close_date,
+    fields."1283" AS cf_on_hold_details,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1309") AS cf_responsible_for_inv,
+    fields."1430" AS cf_due_date,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1245") AS cf_status,
+    fields."1307" AS cf_dt_order_id,
+    fields."1311" AS cf_salescrr_invoice_issue,
+    fields."1625" AS cf_days_suppport_remaining,
+    fields."1362" AS cf_alliance_partner,
+    fields."1355" AS cf_manager,
+    fields."1352" AS cf_visual_compliance_run,
+    fields."1365" AS cf_syncfusion_sales_rep,
+    fields."1354" AS cf_absolute_revenue,
+ carrep.name as cf_car_rep,
+    fields."1394" AS cf_next_contact_date,
+    fields."1427" AS cf_opportunity_amount,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1432") AS cf_task_subtype,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1434") AS cf_day_log,
+    fields."1435" AS cf_time_activity_logged,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1436") AS cf_call_type,
+    fields."1588" AS cf_call_result,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1371") AS cf_license_ordered,
+    fields."1418" AS cf_presale_contract_request,
+    fields."1589" AS cf_assigned_to,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1449") AS cf_ar_status,
+    fields."1454" AS cf_date_sent_to_legal,
+    fields."1459" AS cf_order_entered,
+    fields."1460" AS cf_verified_return_in_dt,
+    fields."1461" AS cf_confirmed_order_csr,
+    fields."1462" AS cf_date_order_closed_paidret,
+    fields."1440" AS cf_discount,
+    fields."1487" AS cf_email_subject,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1312") AS cf_salescrr_issue_type,
+    fields."1602" AS cf_sales_rep_split_amount,
+    contactgroup."1083" AS cf_cg_billing_postal_code,
+    contactgroup."1044" AS cf_cg_known_company_url,
+    contactgroup."1058" AS cf_problematic_pricing_opps,
+    contactgroup."1079" AS cf_cg_billing_street,
+    contactgroup."1080" AS cf_cg_billing_city,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = contactgroup."1170") AS cf_contact_license_type,
+    contactgroup."1291" AS cf_group_billing_country,
+    ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1518") AS cf_order_entered_by,
+		  fields."1006" as cf_reason_for_owner_change,
+		  fields."1535" AS "cf_acct_has_problematic_pricing",
+fields."1536" AS "cf_opp_acct_has_problematic_pricing",
+( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1452") AS cf_channel,
+		  fields."1591" as "cf_csr_confirmed_alliance_order",
+
+fields."1592" as "cf_submitted_for_bd_review",
+ fields."11" AS contactname,
+		  CASE WHEN fields."1462" is not null THEN date_part(''day'', fields."1326" - fields."1462") ELSE date_part(''day'', fields."1326" - CURRENT_DATE) END AS "Invoice Age",
+CASE WHEN tst.label_for_agent = ''Closed'' THEN CASE WHEN ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1021") is null THEN tst.label_for_agent ELSE ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1021") END ELSE tst.label_for_agent END AS "stage",
+CASE WHEN fields."1440" is null THEN fields."1001" ELSE (fields."1001" - ((fields."1001" * fields."1440")/100)) END AS "Amount After Discount",
+CASE WHEN (CASE WHEN tst.label_for_agent = ''Closed'' THEN CASE WHEN ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1021") is null THEN tst.label_for_agent ELSE ( SELECT field_option.option_value
+           FROM field_option
+          WHERE field_option.id = fields."1021") END ELSE tst.label_for_agent END) = ''Closed Won'' then  date_part(''day'', fields."1066" - t.closed_on) else date_part(''day'', fields."1066" - CURRENT_DATE) end  AS "Days To Expiration",
+CASE WHEN fields."1462" is not null THEN CASE WHEN fields."1320" is null THEN date_part(''day'', t.closed_on - fields."1462") ELSE date_part(''day'', fields."1320" - fields."1462") END ELSE 0 END AS "Days To Payment",
+date_part(''day'', fields."1326" - fields."1462") AS "Days To Payment 2",
+date_part(''day'', t.closed_on - fields."1462") AS "Days To Invoice Payment",
+date_part(''day'', t.closed_on - fields."1495") AS "Days not renewing to closed",
+date_part(''day'', fields."1153" - fields."1151") AS "Sales Admin Review Days",
+date_part(''day'', fields."1153" - t.closed_on) AS "Close Date to Processed",
+date_part(''day'', fields."1153" - fields."1160") AS "Days to Process",
+date_part(''day'', fields."1461" - t.closed_on) AS "Close to Final CRRB Checks",
+date_part(''day'', fields."1066" - t.closed_on) AS "Close vs. Exp date",
+date_part(''day'', CURRENT_DATE - t.closed_on) AS "Days Since Close Date",
+CASE WHEN tst.label_for_agent = ''Closed'' THEN date_part(''day'', t.closed_on - t.created_on) ELSE date_part(''day'', CURRENT_DATE - t.created_on) END AS "Days Open",
+CASE WHEN fields."1301" is not null THEN fields."1301" ELSE t.closed_on END AS "Absolute Close Won Date",
+fields."1327" - fields."1068" AS "Upgrade Amount",
+CASE WHEN fields."1623" <= 0 THEN ''Paid Alliance partner before Syncfusion got paid'' ELSE ''Paid Alliance partner after Syncfusion got paid'' END AS "When was Alliance Partner Paid",
+CASE WHEN tst.label_for_agent = ''Closed'' THEN date_part(''day'', t.closed_on - t.created_on) ELSE date_part(''day'', CURRENT_DATE - t.created_on) END AS "Opportunity Age",
+CASE WHEN ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold Sign'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''BoldDesk'' THEN ''BoldSign/Desk'' WHEN ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold BI Cloud'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold BI Enterprise'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold BI Embedded'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold Reports Cloud'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold Reports On-Premise'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold Reports Embedded'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold BI Upgrade'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold Reports'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold BI On-Premise'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold BI New'' THEN ''Bold BI/Reports'' ELSE '''' END AS "Bold Team",
+CASE WHEN (CASE WHEN fields."1462" is not null THEN date_part(''day'', fields."1326" - fields."1462") ELSE date_part(''day'', fields."1326" - CURRENT_DATE) END <= 120) THEN ''Invoice < 120 Days Past Due'' ELSE ''Invoice > 120 Days Past Due'' END AS "Collections or AR?",
+CASE WHEN timelog.time_spent <= 5 THEN ''0 - 5 Min Call'' WHEN timelog.time_spent > 5 AND timelog.time_spent <= 10 THEN ''5 - 10 Min Call'' WHEN timelog.time_spent > 10 AND timelog.time_spent <= 15 THEN ''10 - 15 Min Call'' ELSE ''> 15 Min Call'' END AS "Call time",
+CASE WHEN (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1317") = ''Obtain PO'' THEN ''Obtain PO''
+WHEN (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1317") = ''Delay Legal follow-up'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1317") = ''Legal Following up with Customer'' THEN ''Obtain INV Payment'' WHEN (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1317") = ''Payment Plan'' THEN ''Collections Payment Plan'' WHEN  (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1317") = ''Amy contacting stripe orders'' THEN ''Recurring Orders'' ELSE null END AS "Follow Up Type",
+CASE WHEN (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''Contract Complete'' THEN ''Contract Fully Executed''  WHEN (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''No Signed Contract (>6 Mos)'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''No Signed Contract, Sales Going for Renewal'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''No Contract, Other'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''Returned/Cancelled'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") =  ''No New Contract, Already Under Contract'' THEN ''No Contract Needed'' WHEN (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''Opportunity Split'' OR  (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''Old Record Update - JP'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''Government Contract'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''JV and MTH to discuss'' THEN null ELSE ''Contract In Progress'' END AS "Contract Result",
+CASE WHEN ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Retail - ESEE'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Retail - Other'' THEN ''Not Eligible'' WHEN ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Global'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Division'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Consulting'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Project'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Maintenance & Support'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold BI Upgrade'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold Reports'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold BI On-Premise'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Bold BI New'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Multiple Bold Products (has Bold BI)'' OR ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1371") = ''Multiple Bold Products (no Bold BI)'' THEN ''Eligible'' ELSE null END AS "Eligible for Contract",
+CASE WHEN (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''No Contract, Other'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") =  ''No New Contract, Already Under Contract'' THEN ''No Contract Needed'' WHEN (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''Opportunity Split'' OR  (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''Old Record Update - JP'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''Government Contract'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''JV and MTH to discuss'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1337") = ''Returned/Cancelled'' THEN null ELSE ''Contract Needed'' END AS "Contract",
+CASE WHEN date_part(''day'', fields."1153" - fields."1160") <= 0.5 THEN ''Same Day'' WHEN date_part(''day'', fields."1153" - fields."1160") > 0.5 AND date_part(''day'', fields."1153" - fields."1160") <= 1 THEN ''1 Day'' WHEN date_part(''day'', fields."1153" - fields."1160") > 1 AND date_part(''day'', fields."1153" - fields."1160") <= 2 THEN ''2 Days'' WHEN date_part(''day'', fields."1153" - fields."1160") > 2 AND date_part(''day'', fields."1153" - fields."1160") <= 3 THEN ''3 Days'' WHEN date_part(''day'', fields."1153" - fields."1160") > 3 AND date_part(''day'', fields."1153" - fields."1160") <= 6 THEN ''4 - 6 Days'' WHEN date_part(''day'', fields."1153" - fields."1160") > 6 AND date_part(''day'', fields."1153" - fields."1160") <= 9 THEN ''7 - 9 Days'' ELSE ''10 or More Days'' END AS "CRRB Processing Time",
+CASE WHEN date_part(''day'', fields."1461" - t.closed_on) <= 0.5 THEN ''Same Day'' WHEN date_part(''day'', fields."1461" - t.closed_on) > 0.5 AND date_part(''day'', fields."1461" - t.closed_on) <= 1 THEN ''1 Day'' WHEN date_part(''day'', fields."1461" - t.closed_on) > 1 AND date_part(''day'', fields."1461" - t.closed_on) <= 2 THEN ''2 Days'' WHEN date_part(''day'', fields."1461" - t.closed_on) > 2 AND date_part(''day'', fields."1461" - t.closed_on) <= 3 THEN ''3 Days'' WHEN date_part(''day'', fields."1461" - t.closed_on) > 3 AND date_part(''day'', fields."1461" - t.closed_on) <= 6 THEN ''4 - 6 Days'' WHEN date_part(''day'', fields."1461" - t.closed_on) > 6 AND date_part(''day'', fields."1461" - t.closed_on) <= 9 THEN ''7 - 9 Days'' ELSE ''10 or More Days'' END AS "Days To Final CRRB Check",
+CASE WHEN date_part(''day'', fields."1153" - fields."1151") <= 0.5 THEN ''Same Day'' WHEN date_part(''day'', fields."1153" - fields."1151") > 0.5 AND date_part(''day'', fields."1153" - fields."1151") <= 1 THEN ''1 Day'' WHEN date_part(''day'', fields."1153" - fields."1151") > 1 AND date_part(''day'', fields."1153" - fields."1151") <= 2 THEN ''2 Days'' WHEN date_part(''day'', fields."1153" - fields."1151") > 2 AND date_part(''day'', fields."1153" - fields."1151") <= 3 THEN ''3 Days'' ELSE ''More than 3 Days'' END AS "Days to Process(str)",
+CASE WHEN (CASE WHEN fields."1462" is not null THEN date_part(''day'', fields."1326" - fields."1462") ELSE date_part(''day'', fields."1326" - CURRENT_DATE) END) <= 89 THEN ''Orders Less than 90 Days Past Due'' WHEN (CASE WHEN fields."1462" is not null THEN date_part(''day'', fields."1326" - fields."1462") ELSE date_part(''day'', fields."1326" - CURRENT_DATE) END) > 89 AND (CASE WHEN fields."1462" is not null THEN date_part(''day'', fields."1326" - fields."1462") ELSE date_part(''day'', fields."1326" - CURRENT_DATE) END) <= 100 THEN ''Orders 90 - 100 Days Past Due'' WHEN (CASE WHEN fields."1462" is not null THEN date_part(''day'', fields."1326" - fields."1462") ELSE date_part(''day'', fields."1326" - CURRENT_DATE) END) > 100 AND (CASE WHEN fields."1462" is not null THEN date_part(''day'', fields."1326" - fields."1462") ELSE date_part(''day'', fields."1326" - CURRENT_DATE) END) <= 105 THEN ''Orders 100 - 105 Days Past Due'' WHEN (CASE WHEN fields."1462" is not null THEN date_part(''day'', fields."1326" - fields."1462") ELSE date_part(''day'', fields."1326" - CURRENT_DATE) END) > 105 AND (CASE WHEN fields."1462" is not null THEN date_part(''day'', fields."1326" - fields."1462") ELSE date_part(''day'', fields."1326" - CURRENT_DATE) END) <= 110 THEN ''Orders 106 - 110 Days Past Due'' WHEN (CASE WHEN fields."1462" is not null THEN date_part(''day'', fields."1326" - fields."1462") ELSE date_part(''day'', fields."1326" - CURRENT_DATE) END) > 110 AND (CASE WHEN fields."1462" is not null THEN date_part(''day'', fields."1326" - fields."1462") ELSE date_part(''day'', fields."1326" - CURRENT_DATE) END) <= 115 THEN ''Orders 111 - 115 Days Past Due'' ELSE ''Orders 116 - 120 Days Past Due - Review and Update for Possible Move to Collections'' END AS "Invoice Age(Str)",
+CASE WHEN date_part(''day'', t.closed_on - fields."1462") <= 3 THEN ''0-3'' WHEN date_part(''day'', t.closed_on - fields."1462") > 3 AND date_part(''day'', t.closed_on - fields."1462") <= 10 THEN ''4 - 10 Days'' WHEN date_part(''day'', t.closed_on - fields."1462") > 10 AND  date_part(''day'', t.closed_on - fields."1462") <= 20 THEN ''10 - 20 Days'' WHEN date_part(''day'', t.closed_on - fields."1462") > 20 AND  date_part(''day'', t.closed_on - fields."1462") <= 30 THEN ''20 - 30 Days'' WHEN date_part(''day'', t.closed_on - fields."1462") > 30 AND date_part(''day'', t.closed_on - fields."1462") <= 40 THEN ''30 - 40 Days'' WHEN date_part(''day'', t.closed_on - fields."1462") > 40 AND  date_part(''day'', t.closed_on - fields."1462") <= 50 THEN ''40 - 50 Days'' WHEN date_part(''day'', t.closed_on - fields."1462") > 50 AND  date_part(''day'', t.closed_on - fields."1462") <= 60 THEN ''50 - 60 Days'' WHEN date_part(''day'', t.closed_on - fields."1462") > 60 AND  date_part(''day'', t.closed_on - fields."1462") <= 70 THEN ''60 - 70 Days'' WHEN date_part(''day'', t.closed_on - fields."1462") > 70 AND  date_part(''day'', t.closed_on - fields."1462") <= 80 THEN ''70 - 80 Days'' WHEN date_part(''day'', t.closed_on - fields."1462") > 80 AND  date_part(''day'', t.closed_on - fields."1462") <= 90 THEN ''80 - 90 Days'' ELSE ''More than 90 Days'' END AS "Close to payment",
+to_date(CASE WHEN (CONCAT((CASE WHEN date_part(''month'', fields."1066") = 1 THEN date_part(''year'', fields."1066") - 1 ELSE date_part(''year'', fields."1066") END) ::varchar,''-'',(CASE WHEN date_part(''month'', fields."1066") = 1 THEN 12 ELSE date_part(''month'', fields."1066") - 1 END) ::varchar,''-'',''01'')) =''--01'' THEN null ELSE (CONCAT((CASE WHEN date_part(''month'', fields."1066") = 1 THEN date_part(''year'', fields."1066") - 1 ELSE date_part(''year'', fields."1066") END) ::varchar,''-'',(CASE WHEN date_part(''month'', fields."1066") = 1 THEN 12 ELSE date_part(''month'', fields."1066") - 1 END)::varchar,''-'',''01'')) END, ''YYYY-MM-DD'') AS "Eligible Date to Close",
+CONCAT(''https://intranet.syncfusion.com/order/'', fields."1522") AS "DT Order Link",
+Case (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1092") WHEN ''AE'' THEN 1 WHEN ''BE'' THEN 1 WHEN ''BH'' THEN 1 WHEN ''CH'' THEN 1 WHEN ''DE'' THEN 1 WHEN ''DK'' THEN 1 WHEN ''ES'' THEN 1 WHEN ''FI'' THEN 1 WHEN ''FR'' THEN 1 WHEN ''GR'' THEN 1 WHEN ''IE'' THEN 1 WHEN ''IL'' THEN 1 WHEN ''JO'' THEN 1 WHEN ''KW'' THEN 1 WHEN ''LU'' THEN 1 WHEN ''NL'' THEN 1 WHEN ''NO'' THEN 1 WHEN ''OM'' THEN 1 WHEN ''PL'' THEN 1 WHEN ''PT'' THEN 1 WHEN ''QA'' THEN 1 WHEN ''SA'' THEN 1 WHEN ''SE'' THEN 1 WHEN ''TR'' THEN 1 WHEN ''US'' THEN 2
+WHEN ''UK'' THEN 1 WHEN ''ZA'' THEN 1 WHEN ''AN'' THEN 2 WHEN ''BR'' THEN 2 WHEN ''KY'' THEN 2 WHEN ''MX'' THEN 2 WHEN ''UM'' THEN 2 WHEN ''AS'' THEN 3 WHEN ''AU'' THEN 3 WHEN ''BN'' THEN 3 WHEN ''HK'' THEN 3 WHEN ''IS'' THEN 3 WHEN ''IT'' THEN 3 WHEN ''JP'' THEN 3 WHEN ''KR'' THEN 3 WHEN ''LI'' THEN 3 WHEN ''MY'' THEN 3 WHEN ''NZ'' THEN 3 WHEN ''SG'' THEN 3 WHEN ''United Arab Emirates'' THEN 1 WHEN ''Belgium'' THEN 1 WHEN ''Bahrain'' THEN 1
+WHEN ''Switzerland'' THEN 1 WHEN ''Germany'' THEN 1 WHEN ''Denmark'' THEN 1 WHEN ''Spain'' THEN 1 WHEN ''Finland'' THEN 1 WHEN ''France'' THEN 1 WHEN ''Greece'' THEN 1 WHEN ''Ireland'' THEN 1 WHEN ''Israel'' THEN 1 WHEN ''Jordan'' THEN 1 WHEN ''Kuwait'' THEN 1
+WHEN ''Luxembourg'' THEN 1 WHEN ''Netherlands'' THEN 1 WHEN ''Norway'' THEN 1 WHEN ''Oman'' THEN 1 WHEN ''Poland'' THEN 1 WHEN ''Portugal'' THEN 1 WHEN ''Qatar'' THEN 1 WHEN ''Saudi Arabia'' THEN 1 WHEN ''Sweden'' THEN 1 WHEN ''Turkey'' THEN 1 WHEN ''United Kingdom'' THEN 1 WHEN ''South Africa'' THEN 1 WHEN ''Netherlands Antilles'' THEN 2 WHEN ''Brazil'' THEN 2 WHEN ''Cayman Islands'' THEN 2 WHEN ''Mexico'' THEN 2 WHEN ''United States'' THEN 2 WHEN ''United States Minor Outlying Islands'' THEN 2 WHEN ''American Samoa'' THEN 3 WHEN ''Australia'' THEN 3 WHEN ''Brunei Darussalam'' THEN 3 WHEN ''Hong Kong'' THEN 3 WHEN ''Iceland'' THEN 3 WHEN ''Italy'' THEN 3 WHEN ''Japan'' THEN 3 WHEN ''Korea (South)'' THEN 3 WHEN ''Malaysia'' THEN 3 WHEN ''New Zealand (Aotearoa)'' THEN 3 WHEN ''Singapore'' THEN 3 ELSE 0 END AS "Tier 1 Region",
+CASE WHEN fields."1068" is not null AND NOT((SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1052") = ''Retail'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1052") = '''') THEN (CASE WHEN fields."1492" is not null THEN (CASE WHEN fields."1619" is not null THEN (CASE WHEN fields."1618" is not null THEN fields."1492"/NULLIF(fields."1618", 0) ELSE fields."1492"/NULLIF(fields."1619", 0) END) ELSE fields."1492" END) ELSE (CASE WHEN fields."1619" is not null THEN fields."1068"/NULLIF(fields."1619", 0) ELSE fields."1068" END) END) ELSE (CASE WHEN fields."1479" is not null AND (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1052") = ''Retail'' OR (SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1052") = '''' THEN fields."1479" ELSE fields."1068" END) END AS "Adjusted Projected REN",
+((fields."1327" - fields."1328")/NULLIF(fields."1327", 0)) * 100 AS "Percent Invoice Paid",
+date_part(''day'', fields."1151" - t.created_on) AS "Days to Submit Order",
+CASE WHEN date_part(''day'', fields."1151" - t.created_on) <= 0.5 THEN ''Same Day'' WHEN date_part(''day'', fields."1151" - t.created_on) > 0.5 AND date_part(''day'', fields."1151" - t.created_on) <= 1 THEN ''1 Day'' WHEN date_part(''day'', fields."1151" - t.created_on) > 1 AND date_part(''day'', fields."1151" - t.created_on) <= 2 THEN ''2 Days'' WHEN date_part(''day'', fields."1151" - t.created_on) > 2 AND date_part(''day'', fields."1151" - t.created_on) <= 3 THEN ''3 Days'' WHEN date_part(''day'', fields."1151" - t.created_on) > 3 AND date_part(''day'', fields."1151" - t.created_on) <= 6 THEN ''4 - 6 Days'' WHEN date_part(''day'', fields."1151" - t.created_on) > 6 AND date_part(''day'', fields."1151" - t.created_on) <= 9 THEN ''7 - 9 Days'' ELSE ''10 or More Days'' END AS "Days to Submit Order_bucket",
+
+fields."1174"::double precision + fields."1178"::double precision + fields."1182"::double precision + fields."1186"::double precision + fields."1190"::double precision + fields."1192"::double precision + fields."1195"::double precision + fields."1198"::double precision + fields."1204"::double precision + fields."1206"::double precision + fields."1207"::double precision + fields."1210"::double precision as "Annualized Revenue",
+case when date_part(''day'', fields."1066" - t.closed_on) <= -30 Then ''Closed more than  30 days after Expiration Date'' else (case when date_part(''day'', fields."1066" - t.closed_on) > -30 and date_part(''day'', fields."1066" - t.closed_on) <= -1 Then ''Closed 1 to 30 days after Expiration Date'' else (case when date_part(''day'', fields."1066" - t.closed_on) > -1 Then ''Closed by Expiration Date'' else null end) end) end as "Closed By Expiration",
+null as "Link to Next REN Opportunity",
+null as "Link to Old REN Opportunity",
+fields."1626" as "Car_Rep_Contact"
+ 
+ FROM (select * from ticket_detail where  ticket_category_option_id in (4) and id in ( %s )) td
+    LEFT JOIN ticket_link tl ON tl.source_ticket_id = td.id  
+     LEFT JOIN ticket_detail t ON t.id = tl.destination_ticket_id and t.ticket_category_option_id in (1569)	
+     LEFT JOIN brand b ON b.org_brand_id = t.org_brand_id
+     LEFT JOIN ticket_status tst ON tst.id = t.ticket_status_id
+     LEFT JOIN ticket_source tso ON tso.id = t.ticket_source_id
+     LEFT JOIN users requester ON requester.id = t.requested_by
+     LEFT JOIN users replied ON replied.id = t.last_replied_by_id
+     LEFT JOIN user_type rut ON rut.id = t.last_replied_by_user_type_id
+     LEFT JOIN users creator ON creator.id = t.created_by
+     LEFT JOIN users modifier ON modifier.id = t.last_modified_by
+     LEFT JOIN ticket_priority tp ON tp.id = t.ticket_priority_id
+     LEFT JOIN users assignee ON assignee.id = t.assigned_to_user_id
+     LEFT JOIN user_group aug ON aug.id = t.assigned_to_group_id
+     LEFT JOIN contact_group cg ON cg.id = t.contact_group_id
+     LEFT JOIN users closed ON closed.id = t.closed_by
+     LEFT JOIN agent ON t.assigned_to_user_id = agent.user_id
+	 LEFt JOIN users owner on agent.user_id = owner.id and owner.user_type_id = 2
+   LEFT JOIN (select ticket_id,SUM(time_spent) as time_spent from ticket_time_log group by ticket_id) timelog ON timelog.ticket_id = t.id 
+ LEFT JOIN ticket_update tu ON tu.ticket_id = t.id AND tu.is_first_update = true
+     LEFT JOIN ticket_update_type tut ON tut.id = tu.ticket_update_type_id,
+     jsonb_to_record(t.custom_fields) fields("1001" numeric(36,6), "1522" character varying, "1489" character varying, "1490" date, "1336" character varying, "1540" character varying, "1491" date, "1492" numeric(36,6), "1493" bigint, "1494" date, "1092" bigint,  "1497" date, "1103" character varying, "1063" bigint, "1498" boolean, "1141" bigint, "1503" character varying, "1093" timestamp without time zone, "1499" bigint, "1500" boolean, "1495" date,  "1596" date, "1504" date, "1618" int, "1619" int,   "1510" date, "1623" int, "1512" bigint, "1513" bigint, "1514" date, "1515" date, "1044" character varying, "1066" timestamp without time zone, "1052" bigint, "1453" bigint, "1299" bigint, "1301" timestamp without time zone, "1501" character varying,  "1507" date, "1125" character varying, "1366" character varying, "1508" date,  "1516" boolean, "1517" date, "1519" bigint, "1520" bigint, "1521" date, "1151" timestamp without time zone,  "1496" integer[], "1373" character varying, "1226" bigint, "1509" date, "1384" timestamp without time zone, "1248" bigint, "1300" character varying, "1277" character varying, "1388" bigint, "1593" int[], "1400" character varying, "1142" timestamp without time zone, "1370" bigint, "1372" bigint, "1042" character varying, "1480" boolean, "1479" numeric(36,6), "1483" character varying, "1009" bigint, "1485" character varying, "1259" timestamp without time zone, "1326" timestamp without time zone, "1102" bigint, "1310" bigint, "1344" timestamp without time zone, "1347" timestamp without time zone, "1343" numeric(36,6), "1330" timestamp without time zone, "1338" timestamp without time zone,  "1010" character varying, "1139" character varying, "1542" character varying, "1111" bigint, "1005" bigint, "1094" bigint, "1544" character varying, "1404" timestamp without time zone, "1095" integer[], "1118" character varying, "1108" character varying, "1543" character varying, "1008" bigint, "1025" bigint, "1049" character varying, "1043" character varying, "1069" bigint, "1380" character varying, "1622" character varying, "1068" numeric(36,6), "1332" character varying, "1018" character varying, "1020" character varying, "1294" character varying, "1011" character varying, "1315" character varying, "1318" bigint, "1065" timestamp without time zone, "1047" character varying, "1050" bigint, "1060" bigint, "1051" bigint, "1296" bigint, "1021" bigint, "1320" timestamp without time zone, "1351" character varying, "1313" timestamp without time zone, "1314" character varying, "1054" character varying, "1121" timestamp without time zone, "1123" character varying, "1144" bigint, "1145" bigint, "1146" character varying, "1147" boolean, "1149" bigint, "1048" character varying, "1382" timestamp without time zone, "1137" character varying, "1169" character varying, "1170" bigint, "1153" timestamp without time zone, "1155" timestamp without time zone, "1156" timestamp without time zone, "1160" timestamp without time zone, "1046" bigint, "1179" numeric(36,6), "1180" numeric(36,6), "1174" numeric(36,6), "1177" numeric(36,6), "1337" bigint, "1385" timestamp without time zone, "1227" bigint, "1165" integer[], "1240" numeric(36,6), "1232" bigint, "1233" boolean, "1243" character varying, "1342" numeric(36,6), "1247" bigint, "1241" character varying, "1238" integer[], "1249" timestamp without time zone, "1254" date, "1255" timestamp without time zone, "1256" timestamp without time zone, "1257" timestamp without time zone, "1250" character varying, "1167" numeric(36,6), "1262" timestamp without time zone, "1328" numeric(36,6), "1322" numeric(36,6), "1323" bigint, "1316" timestamp without time zone, "1345" timestamp without time zone, "1546" character varying, "1321" timestamp without time zone, "1399" bigint, "1334" integer[], "1317" bigint, "1319" timestamp without time zone, "1327" numeric(36,6), "1340" bigint, "1263" character varying, "1260" timestamp without time zone, "1261" timestamp without time zone, "1268" timestamp without time zone, "1279" bigint, "1291" character varying, "1285" bigint, "1286" bigint, "1287" character varying, "1288" timestamp without time zone, "1308" timestamp without time zone, "1581" character varying, "1281" timestamp without time zone, "1283" character varying, "1309" bigint, "1430" timestamp without time zone, "1245" bigint,  "1307" character varying, "1350" character varying, "1311" timestamp without time zone, "1625" decimal(36,6), "1362" character varying, "1355" character varying, "1352" timestamp without time zone, "1365" character varying, "1367" numeric(36,6), "1354" character varying, "1335" character varying, "1394" timestamp without time zone, "1427" numeric(36,6), "1432" bigint, "1434" bigint, "1435" timestamp without time zone, "1436" bigint, "1588" character varying, "1371" bigint, "1418" timestamp without time zone, "1589" character varying, "1449" bigint, "1454" timestamp without time zone, "1459" date, "1460" boolean, "1461" date, "1462" timestamp without time zone, "1440" numeric(36,6), "1487" character varying, "1312" bigint, "1602" decimal(36,6), "1518" bigint,"1006" int,"1178" numeric(36,6), "1182" numeric(36,6), "1186" numeric(36,6), "1190" numeric(36,6), "1192" numeric(36,6), "1195" numeric(36,6), "1198" numeric(36,6), "1204" numeric(36,6), "1206" numeric(36,6), "1207" numeric(36,6), "1210" numeric(36,6),"1535" timestamp without time zone, "1536" timestamp without time zone,"1452" bigint,"1591" timestamp , "1592" timestamp,"11" varchar,"1626" varchar)
+	  LEFT Join users carrep on carrep.email=fields."1335",
+     jsonb_to_record(cg.custom_fields) contactgroup("1083" character varying, "1044" character varying, "1058" boolean, "1079" character varying, "1080" character varying, "1170" bigint, "1291" character varying)
+			  
+			   ',ticketid)) as ticket_detail(parentid bigint,id bigint, org_id integer, brand_id integer, org_brand_id integer, brand_name text, "Opportunity Name" text, is_visible_in_customer_portal boolean, requested_by bigint, requester text, assigned_to_user_id bigint, assignee text, "AR Rep" text, assigned_to_group_id integer, "group" text, contact_group_id bigint, contact_group text, resolution_due_on timestamp with time zone, ticket_status_id integer, status text, ticket_source_id integer, source text, update_count integer, note_count integer, attachment_count integer, work_log_count integer, total_time_logged integer, total_billable_time_logged integer, first_response_due_on timestamp with time zone, next_response_due_on timestamp with time zone, last_replied_on timestamp with time zone, last_replied_by_id bigint, last_replied_by text, last_replied_by_user_type_id integer, last_replied_by_user_type text, closed_on timestamp with time zone, closed_by bigint, closed_by_name text, created_on timestamp with time zone, created_by bigint, creator text, last_modified_on timestamp with time zone, last_modified_by bigint, "Last Modified By" text, is_spam boolean, is_active boolean, tsv tsvector, is_resolution_date_modified boolean, last_status_changed_on timestamp with time zone, is_first_response_updated boolean, ticket_type_option_id bigint, ticket_category_option_id bigint, ticket_priority_id integer, priority text, "Account Name" text, subject text, type text, category text, email character varying, "OpportunityOwner" text, time_spent bigint, unique_external_reference_id text, agentid bigint, notes text, isnotesprivate boolean, notetype text, assigned text, cf_amount numeric(36,6), cf_opp_dt_order_id character varying, cf_link_to_bold_order character varying, cf_expected_payment_date date, cf_group_car_rep character varying, cf_secondary_lead_source character varying, cf_contract_renewal_date date, cf_contract_renewal_amount numeric(36,6), cf_reinstate_reason text, cf_last_crr_rep_contact date, cf_country text, cf_date_reviewed date, cf_nonrenewal_reason text, cf_cleared_by_jv boolean, cf_order_sheet_status text, cf_case_number character varying, cf_downloaded_date timestamp without time zone, cf_key_order_issue text, cf_term_12_months boolean, cf_date_moved_to_not_renewing date, cf_adobe_sign_exp_date date, cf_next_cl_contact date, cf__of_years_in_next_payment_term decimal(36,6), cf__of_years_in_previous_payment_term decimal(36,6), cf_ap_processed_alliance_fee date, cf_days_to_pay_alliance_partner integer, cf_alliance_fee_tier text, cf_alliance_partner_order_status text, cf_biz_dev_reviewed date, cf_csr_returned_for_correction date, cf_dt_expiration_date timestamp without time zone, cf_original_license_type text, cf_opp_alliance_partner text, cf_return_details text, cf_original_closedwon_date timestamp without time zone, cf_current_subscription_term character varying, cf_last_customer_contact date, cf_opportunity_name character varying, cf_lead_source character varying, cf_next_ar_contact date, cf_opp_presale_contract_request boolean, cf_end_date date, cf_ren_audit_review text, cf_counsel_reviewed text, cf_flagged_by_mahas_team date, cf_submitted_for_approval timestamp without time zone, cf_order_reviewed_by integer[], cf_group_account_name character varying, cf_payment_frequency text, cf_submitted_to_counsel_review date, cf_2nd_contact_date timestamp without time zone, cf_case_type text, cf_return_notes character varying, cf_engagement_status text, cf_product text, cf_review_link character varying, cf_contract_license_ordered text, cf_ar_license_ordered text, cf_opp_has_problematic_pricing boolean, cf_renewal_amount_this_year numeric(36,6), cf_days_since_contact character varying, cf_my_call_list_est text, cf_order_sheet_name character varying, cf_date_signed_by_syncfusion timestamp without time zone, cf_invoice_due_date timestamp without time zone, cf_return_identified_by text, cf_contract_sent timestamp without time zone, cf_paralegal_contracts_to_returncancel timestamp without time zone, cf_total_contract_amount numeric(36,6), cf_order_sheet_incomplete timestamp without time zone, cf_salescr_action_needed timestamp without time zone, cf_link_to_return_opportunity character varying, cf_company character varying, cf_opportunity_category character varying, cf_product_or_plan text, cf_revenue_type text, cf_call_country text, cf_last_renewal_order_id character varying, cf_demo_scheduled timestamp without time zone, cf_reason_lost_comments character varying, cf_opportunity_source character varying, cf_download_country character varying, cf_reason_lost text, cf_alliance_partner_status text, cf_customerid character varying, cf_no_of_order_sheets_in_opp character varying, cf_previous_dt_order_amount numeric(36,6), cf_manager_at_time_of_sale character varying, cf_department character varying, cf_known_company_url character varying, cf_secondary_ap_contact character varying, cf_is_invoice_collectible text, cf_problematic_pricing_acct timestamp without time zone, cf_tier_1_country_code character varying, cf_renewal_status text, cf_renewal_confirmation text, cf_contract_reviewed text, cf_reason_returned text, cf_resolution text, cf_po_obtained_legal timestamp without time zone, cf_contact_lead_source character varying, cf_salescrr_issue_resolved timestamp without time zone, cf_primary_ap_contact character varying, cf_visual_compliance_run_by text, cf_crr_rep text, cf_crr_corrections_required character varying, cf_returnrebook boolean, cf_payment_confirmation_attached text, cf_tier_1_country_name character varying, cf_1st_contact_date timestamp without time zone, cf_email character varying, cf_submitted_for_processing timestamp without time zone, cf_rejected_to_rep timestamp without time zone, cf_returned_for_corrections timestamp without time zone, cf_order_sheet_processed timestamp without time zone, cf_record_type text, cf_upgrade_dollar_amount numeric(36,6), cf_total_sale_amount numeric(36,6), cf_month_one_amount numeric(36,6), cf_month_two_amount numeric(36,6), cf_month_three_amount numeric(36,6), cf_month_four_amount numeric(36,6), cf_month_five_amount numeric(36,6), cf_month_six_amount numeric(36,6), cf_month_seven_amount numeric(36,6), cf_month_eight_amount numeric(36,6), cf_month_nine_amount numeric(36,6), cf_month_ten_amount numeric(36,6), cf_month_eleven_amount numeric(36,6), cf_month_twelve_amount numeric(36,6), cf_fee_to_alliance_partner numeric(36,6), cf_contract_status text, cf_3rd_contact_date timestamp without time zone, cf_payment_method text, cf_bold_commissionable_amount numeric(36,6), cf_customer_invoice_details text, cf_stripe_order boolean, cf_year_one_contract_amount numeric(36,6), cf_case_resolution text, cf_sales_admin_correction_requested integer[], cf_date_agreement_effective timestamp without time zone, cf_date_agreement_expires date, cf_date_sent_to_customer timestamp without time zone, cf_date_estimate_sent_to_customer timestamp without time zone, cf_date_signed_by_customer timestamp without time zone, cf_case_car_rep character varying, cf_crr_split_amount numeric(36,6), cf_follow_up_date timestamp without time zone, cf_outstanding_amount numeric(36,6), cf_amount_collected_by_legal numeric(36,6), cf_payment_outcome text, cf_invoice_sent timestamp without time zone, cf_contract_complete_or_closed timestamp without time zone, cf_reason_for_no_contract character varying, cf_payment_obtained_legal timestamp without time zone, cf_review_site text, cf_order_info_needed integer[], cf_collection_legal_status text, cf_last_collections_contact timestamp without time zone, cf_total_invoice_amount numeric(36,6), cf_salescr_action_type text, cf_case_description character varying, cf_date_sent_to_jv timestamp without time zone, cf_date_fully_executed timestamp without time zone, cf_90_days_support timestamp without time zone, cf_weekly_call_day text, cf_last_ar_contact timestamp without time zone, cf_related_opp_account_name character varying, cf_related_opp_close_date timestamp without time zone, cf_on_hold_details character varying, cf_responsible_for_inv text, cf_due_date timestamp without time zone, cf_status text, cf_dt_order_id character varying, cf_salescrr_invoice_issue timestamp without time zone, cf_days_suppport_remaining decimal(36,6), cf_alliance_partner character varying, cf_manager character varying, cf_visual_compliance_run timestamp without time zone, cf_syncfusion_sales_rep character varying, cf_absolute_revenue character varying, cf_car_rep text, cf_next_contact_date timestamp without time zone, cf_opportunity_amount numeric(36,6), cf_task_subtype text, cf_day_log text, cf_time_activity_logged timestamp without time zone, cf_call_type text, cf_call_result character varying, cf_license_ordered text, cf_presale_contract_request timestamp without time zone, cf_assigned_to character varying, cf_ar_status text, cf_date_sent_to_legal timestamp without time zone, cf_order_entered date, cf_verified_return_in_dt boolean, cf_confirmed_order_csr date, cf_date_order_closed_paidret timestamp without time zone, cf_discount numeric(36,6), cf_email_subject character varying, cf_salescrr_issue_type text, cf_sales_rep_split_amount character varying, cf_cg_billing_postal_code character varying, cf_cg_known_company_url character varying, cf_problematic_pricing_opps boolean, cf_cg_billing_street character varying, cf_cg_billing_city character varying, cf_contact_license_type text, cf_group_billing_country character varying, cf_order_entered_by text, cf_reason_for_owner_change integer, cf_acct_has_problematic_pricing timestamp without time zone, cf_opp_acct_has_problematic_pricing timestamp without time zone, cf_channel text, cf_csr_confirmed_alliance_order timestamp without time zone, cf_submitted_for_bd_review timestamp without time zone, contactname character varying, "Invoice Age" double precision, stage text, "Amount After Discount" numeric(36,6), "Days To Expiration" double precision, "Days To Payment" double precision, "Days To Payment 2" double precision, "Days To Invoice Payment" double precision, "Days not renewing to closed" double precision, "Sales Admin Review Days" double precision, "Close Date to Processed" double precision, "Days to Process" double precision, "Close to Final CRRB Checks" double precision, "Close vs. Exp date" double precision, "Days Since Close Date" double precision, "Days Open" double precision, "Absolute Close Won Date" timestamp with time zone, "Upgrade Amount" numeric(36,6), "When was Alliance Partner Paid" text, "Opportunity Age" double precision, "Bold Team" text, "Collections or AR?" text, "Call time" text, "Follow Up Type" text, "Contract Result" text, "Eligible for Contract" text, "Contract" text, "CRRB Processing Time" text, "Days To Final CRRB Check" text, "Days to Process(str)" text, "Invoice Age(Str)" text, "Close to payment" text, "Eligible Date to Close" date, "DT Order Link" text, "Tier 1 Region" integer, "Adjusted Projected REN" numeric(36,6), "Percent Invoice Paid" numeric(36,6), "Days to Submit Order" double precision, "Days to Submit Order_bucket" text, "Annualized Revenue" double precision, "Closed By Expiration" text, "Link to Next REN Opportunity" character varying, "Link to Old REN Opportunity" character varying,"Car_Rep_Contact" varchar)
+     LEFT JOIN "MVw_Notes" notes ON notes.id = ticket_detail.id
+   LEFT Join "MVw_RDU_detail" rdu on ticket_detail.email = rdu.emailaddress
+where ticket_detail.id>0 ;
+	end;
+
+$BODY$;
+
+ALTER FUNCTION public.get_child_contractticket_detail(character varying)
+    OWNER TO bolddeskuser;
