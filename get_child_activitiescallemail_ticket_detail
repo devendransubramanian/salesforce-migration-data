@@ -1,0 +1,37 @@
+-- FUNCTION: public.get_related_childactiviescallemail_ticket_detail(character varying)
+
+-- DROP FUNCTION IF EXISTS public.get_related_childactiviescallemail_ticket_detail(character varying);
+
+CREATE OR REPLACE FUNCTION public.get_related_childactiviescallemail_ticket_detail(
+	ticketid character varying)
+    RETURNS TABLE(id bigint, messageid bigint, tagid bigint, subject character varying, assigned character varying, created_on timestamp without time zone, activityname character varying) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+begin
+	return query 
+
+Select *  FROM dblink('host=34.86.108.93 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538', 
+					  format('select td.id,tm.message_id as messageid,
+tag.id as tagid,
+regexp_replace(substring(tu.description from ''<subject>.*</subject>''), E''<[^>]+>'', '''', ''gi'') as subject,
+users.name as assigned,
+
+tu.created_on,tag.name as tagname from
+(select * from public.ticket_detail where ticket_category_option_id = 4 and id in (%s) and is_active=true) td
+    left join public.ticket_update tu on tu.ticket_id = td.id and tu.ticket_update_type_id !=1
+    left join public.tag_mapper tm on tm.message_id = tu.id
+    left join public.tag on tag.id=tm.tag_id and tag.id in (38,39)
+    left join public.users on users.id = tu.created_by
+	where tag.name != '''' or tag.name != null',ticketid)) ticket( id bigint,messageid bigint,tagid bigint, subject character varying,
+															  assigned character varying,
+															   created_on timestamp,
+															   activityname character varying);
+	end;
+$BODY$;
+
+ALTER FUNCTION public.get_related_childactiviescallemail_ticket_detail(character varying)
+    OWNER TO bolddeskuser;
