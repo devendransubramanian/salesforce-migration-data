@@ -14,22 +14,37 @@ AS $BODY$
 begin
 	return query 
 
-Select *  FROM dblink('host=34.86.108.93 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538', 
+Select ticket.*  FROM dblink('host=35.236.243.204 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538', 
 					  format('select td.id,tm.message_id as messageid,
 tag.id as tagid,
 regexp_replace(substring(tu.description from ''<subject>.*</subject>''), E''<[^>]+>'', '''', ''gi'') as subject,
 users.name as assigned,
 
-tu.created_on,tag.name as tagname from
-(select * from public.ticket_detail where ticket_category_option_id = 4 and id in (%s) and is_active=true) td
+tu.created_on,tag.name as tagname 
+							--,timelog.time_spent,timelog.time_log_date  
+							 from
+(select * from public.ticket_detail where id in (%s) and is_active=true) td
     left join public.ticket_update tu on tu.ticket_id = td.id and tu.ticket_update_type_id !=1
     left join public.tag_mapper tm on tm.message_id = tu.id
     left join public.tag on tag.id=tm.tag_id and tag.id in (38,39)
     left join public.users on users.id = tu.created_by
+						--  LEFT JOIN ticket_time_log timelog ON timelog.ticket_id = tu.ticket_id and tu.created_by=timelog.user_id and timelog.time_log_date=tu.created_on
+
 	where tag.name != '''' or tag.name != null',ticketid)) ticket( id bigint,messageid bigint,tagid bigint, subject character varying,
 															  assigned character varying,
 															   created_on timestamp,
-															   activityname character varying);
+															   activityname character varying
+															--	,time_spent bigint,time_log_date timestamp with time zone
+																 )
+--LEFT Join (SELECT rsu.id,
+   
+ --   rdusrole.role AS "Assigned Role",
+ --  rsu.firstname || ' ' || rsu.lastname as name
+--   FROM rdu_salesusers rsu   
+--     LEFT JOIN rdu_salesdesignations rdudesig ON rdudesig.id = rsu.designationid
+--     LEFT JOIN rdu_salesroles rdusrole ON rdusrole.id = rsu.roleid
+--) role on ticket.assigned = role.name
+;
 	end;
 $BODY$;
 
