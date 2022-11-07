@@ -395,3 +395,4 @@ $BODY$;
 
 ALTER FUNCTION public.get_related_oppticket_detail(character varying)
     OWNER TO bolddeskuser;
+  
