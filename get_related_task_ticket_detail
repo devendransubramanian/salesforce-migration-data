@@ -1,0 +1,55 @@
+-- FUNCTION: public.get_related_task_ticket_detail(character varying)
+
+-- DROP FUNCTION IF EXISTS public.get_related_task_ticket_detail(character varying);
+
+CREATE OR REPLACE FUNCTION public.get_related_task_ticket_detail(
+	ticketid character varying)
+    RETURNS TABLE(parentid bigint, id bigint, cf_assigned_to character varying, cf_task_status character varying, cf_due_date timestamp without time zone, cf_completed_datetime timestamp without time zone, cf_related_to character varying, cf_task_record_type character varying, cf_task_subtype text, cf_task_type character varying, cf_reminder_set boolean, cf_day_log text, cf_time_activity_logged timestamp without time zone, cf_call_type text, cf_call_result character varying, cf_comments character varying, priority text, subject text, cf_task_name character varying, cf_external_reference_id character varying) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+
+begin
+	return query 
+
+SELECT ticket_detail.parentid,ticket_detail.id,
+  tnotes.cf_assigned_to,
+tnotes.cf_task_status,
+tnotes.cf_due_date,
+tnotes.cf_completed_datetime,
+tnotes.cf_related_to,
+tnotes.cf_task_record_type,
+tnotes.cf_task_subtype,
+tnotes.cf_task_type,
+tnotes.cf_reminder_set,
+tnotes.cf_day_log,
+tnotes.cf_time_activity_logged,
+tnotes.cf_call_type,
+tnotes.cf_call_result,
+tnotes.cf_comments,
+tnotes.priority,
+tnotes.Subject,
+ticket_detail.cf_task_name,
+tnotes.cf_external_reference_id
+
+   FROM dblink('host=35.236.243.204 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538'::text, format('SELECT 
+td.id as parentid,
+t.id,
+ fields."1590" as "cf_task_name"
+  FROM (select * from ticket_detail where   id in ( %s) and is_active=true ) td
+    LEFT JOIN ticket_link tl ON tl.destination_ticket_id = td.id AND tl.ticket_link_type_id = 1
+     LEFT JOIN ticket_detail t ON t.id = tl.source_ticket_id  and t.ticket_category_option_id=2459
+ 	 , jsonb_to_record(t.custom_fields) as fields( "1590" varchar)
+			   ',ticketid)) as ticket_detail(parentid bigint,id bigint,"cf_task_name" varchar)
+     LEFT JOIN ticket_detail tnotes ON tnotes.id = ticket_detail.id
+   
+where ticket_detail.id>0 ;
+	end;
+
+$BODY$;
+
+ALTER FUNCTION public.get_related_task_ticket_detail(character varying)
+    OWNER TO bolddeskuser;
