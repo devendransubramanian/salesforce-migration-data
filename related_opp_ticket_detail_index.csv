@@ -1,0 +1,3 @@
+"schemaname","tablename","indexname","tablespace","indexdef"
+"public","related_opp_ticket_detail","ticket_detail_pkey_related_opp",NULL,"CREATE UNIQUE INDEX ticket_detail_pkey_related_opp ON public.related_opp_ticket_detail USING btree (parentid, id)"
+"public","related_opp_ticket_detail","related_oppstage_idx",NULL,"CREATE INDEX related_oppstage_idx ON public.related_opp_ticket_detail USING btree (stage)"

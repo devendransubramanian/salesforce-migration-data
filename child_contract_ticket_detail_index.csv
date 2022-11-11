@@ -1,0 +1,8 @@
+"schemaname","tablename","indexname","tablespace","indexdef"
+"public","child_contract_ticket_detail","ticket_detail_pkey_child_contract",NULL,"CREATE UNIQUE INDEX ticket_detail_pkey_child_contract ON public.child_contract_ticket_detail USING btree (parentid, id)"
+"public","child_contract_ticket_detail","child_contract_ticket_detail_Opportunity Name_idx",NULL,"CREATE INDEX ""child_contract_ticket_detail_Opportunity Name_idx"" ON public.child_contract_ticket_detail USING btree (""Opportunity Name"")"
+"public","child_contract_ticket_detail","idx_childContract",NULL,"CREATE INDEX ""idx_childContract"" ON public.child_contract_ticket_detail USING btree (parentid DESC NULLS LAST, id DESC NULLS LAST)"
+"public","child_contract_ticket_detail","child_contractcf_visual_compliance_run_idx",NULL,"CREATE INDEX child_contractcf_visual_compliance_run_idx ON public.child_contract_ticket_detail USING btree ((cf_visual_compliance_run AT TIME ZONE report_at_local_time_test()))"
+"public","child_contract_ticket_detail","cf_contract_complete_or_closed_idx",NULL,"CREATE INDEX cf_contract_complete_or_closed_idx ON public.child_contract_ticket_detail USING btree ((cf_contract_complete_or_closed AT TIME ZONE report_at_local_time_test()))"
+"public","child_contract_ticket_detail","child_contract_ticket_detail_cf_contract_status_idx",NULL,"CREATE INDEX child_contract_ticket_detail_cf_contract_status_idx ON public.child_contract_ticket_detail USING btree (cf_contract_status)"
+"public","child_contract_ticket_detail","child_contract_ticket_detail_cf_contract_status_idx1",NULL,"CREATE INDEX child_contract_ticket_detail_cf_contract_status_idx1 ON public.child_contract_ticket_detail USING btree (cf_contract_status)"

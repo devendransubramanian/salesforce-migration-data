@@ -1,0 +1,6 @@
+"schemaname","tablename","indexname","tablespace","indexdef"
+"public","child_activitiescallemail_ticket_detail","child_activitiescallemail_ticket_det_id_assigned_created_on_idx",NULL,"CREATE INDEX child_activitiescallemail_ticket_det_id_assigned_created_on_idx ON public.child_activitiescallemail_ticket_detail USING btree (id, assigned, created_on)"
+"public","child_activitiescallemail_ticket_detail","activitycallemail_key",NULL,"CREATE UNIQUE INDEX activitycallemail_key ON public.child_activitiescallemail_ticket_detail USING btree (messageid, tagid)"
+"public","child_activitiescallemail_ticket_detail","activity_created_on_idx",NULL,"CREATE INDEX activity_created_on_idx ON public.child_activitiescallemail_ticket_detail USING btree (report_at_local_time(created_on))"
+"public","child_activitiescallemail_ticket_detail","child_activitycreated_on_idx",NULL,"CREATE INDEX child_activitycreated_on_idx ON public.child_activitiescallemail_ticket_detail USING btree ((created_on AT TIME ZONE report_at_local_time_test()))"
+"public","child_activitiescallemail_ticket_detail","child_activitiescallemail_ticket_detail_id_Assigned Role_idx",NULL,"CREATE INDEX ""child_activitiescallemail_ticket_detail_id_Assigned Role_idx"" ON public.child_activitiescallemail_ticket_detail USING btree (id, ""Assigned Role"")"

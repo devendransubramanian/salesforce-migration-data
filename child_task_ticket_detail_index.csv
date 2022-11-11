@@ -1,0 +1,2 @@
+"schemaname","tablename","indexname","tablespace","indexdef"
+"public","child_task_ticket_detail","child_task_ticket_detail_pkey",NULL,"CREATE UNIQUE INDEX child_task_ticket_detail_pkey ON public.child_task_ticket_detail USING btree (parentid, id)"

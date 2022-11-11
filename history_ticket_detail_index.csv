@@ -1,0 +1,4 @@
+"schemaname","tablename","indexname","tablespace","indexdef"
+"public","history_ticket_detail","history_ticket_detail_pkey",NULL,"CREATE UNIQUE INDEX history_ticket_detail_pkey ON public.history_ticket_detail USING btree (id, ticket_id, updatetype)"
+"public","history_ticket_detail","history_edit_date_idx",NULL,"CREATE INDEX history_edit_date_idx ON public.history_ticket_detail USING btree ((""Edit Date"" AT TIME ZONE report_at_local_time_test()))"
+"public","history_ticket_detail","history_ticket_detail_ticket_id_FieldName_idx",NULL,"CREATE INDEX ""history_ticket_detail_ticket_id_FieldName_idx"" ON public.history_ticket_detail USING btree (ticket_id, ""FieldName"")"

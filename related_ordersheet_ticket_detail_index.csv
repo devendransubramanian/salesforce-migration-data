@@ -1,0 +1,2 @@
+"schemaname","tablename","indexname","tablespace","indexdef"
+"public","related_ordersheet_ticket_detail","ordersheet_pkey",NULL,"CREATE UNIQUE INDEX ordersheet_pkey ON public.related_ordersheet_ticket_detail USING btree (parentid, id)"

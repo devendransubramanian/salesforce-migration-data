@@ -1,0 +1,5 @@
+"schemaname","tablename","indexname","tablespace","indexdef"
+"public","parent_opp_ticket_detail","ticket_detail_pkey_parent_opp",NULL,"CREATE UNIQUE INDEX ticket_detail_pkey_parent_opp ON public.parent_opp_ticket_detail USING btree (parentid)"
+"public","parent_opp_ticket_detail","idx_parent_opp",NULL,"CREATE INDEX idx_parent_opp ON public.parent_opp_ticket_detail USING btree (parentid DESC NULLS LAST, id DESC NULLS LAST)"
+"public","parent_opp_ticket_detail","parent_oppstage_idx",NULL,"CREATE INDEX parent_oppstage_idx ON public.parent_opp_ticket_detail USING btree (stage)"
+"public","parent_opp_ticket_detail","parent_opp_ticket_detail_cf_contract_status_idx",NULL,"CREATE INDEX parent_opp_ticket_detail_cf_contract_status_idx ON public.parent_opp_ticket_detail USING btree (cf_contract_status)"
