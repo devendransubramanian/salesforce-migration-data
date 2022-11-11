@@ -1,0 +1,3 @@
+"schemaname","tablename","indexname","tablespace","indexdef"
+"public","child_ar_ticket_detail","ticket_detail_pkey_child_ar",NULL,"CREATE UNIQUE INDEX ticket_detail_pkey_child_ar ON public.child_ar_ticket_detail USING btree (parentid)"
+"public","child_ar_ticket_detail","idx_childar",NULL,"CREATE INDEX idx_childar ON public.child_ar_ticket_detail USING btree (parentid DESC NULLS LAST, id DESC NULLS LAST)"
