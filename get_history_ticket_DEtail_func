@@ -1,0 +1,43 @@
+select id,ticket_id ,
+case when "Description" is null then "FieldName" else 'Description' end as updatetype,
+	"Edit Date" ,
+"Edited By" ,
+	is_active ,
+	"Description" ,
+    "FieldName" ,
+    "NewString" ,
+	  "OldString" ,
+    "FieldApiName"  
+from public.dblink(
+'host=34.86.108.93 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538',
+'SELECT t.id,
+t.ticket_id, 
+
+t.last_modified_on as "Edit Date", 
+requester.name "Edited By",
+t.is_active,
+fields."Description"
+,fields."FieldName"
+,fields."NewString" as "New Value"
+,fields."OldString" as "Old Value"
+,fields."FieldApiName"
+	FROM public.ticket_change_log t
+	 LEFT JOIN users requester ON requester.id = t.last_modified_by
+	 , jsonb_array_elements(t.change_logs) AS f(doc)
+	,jsonb_to_record(f.doc) fields("Description" varchar,
+    "FieldName" varchar,
+    "NewString" varchar,
+	  "OldString" varchar,
+    "FieldApiName" varchar)
+'
+) as ticket_detail(id bigint,
+ticket_id bigint,
+	"Edit Date" timestamp with time zone,
+"Edited By" varchar,
+	is_active boolean,
+	"Description" varchar,
+    "FieldName" varchar,
+    "NewString" varchar,
+	  "OldString" varchar,
+    "FieldApiName" varchar
+)
