@@ -6,6 +6,7 @@ CREATE OR REPLACE PROCEDURE public.incremental_refresh_ticket_detail(
 	INOUT records character varying)
 LANGUAGE 'plpgsql'
 AS $BODY$
+
 DECLARE
   
 
@@ -13,21 +14,16 @@ last_modified_colum_td timestamp with time zone;
  newids bigint[];
  _id bigint;
  reclen varchar;
+ records varchar;
 BEGIN
 select max(last_modified_on) into last_modified_colum_td from ticket_detail;
 raise notice 'data modified column in  ticket detail %', last_modified_colum_td;
-newids := ARRAY(
-select  id  from  public.dblink(
-'host=35.236.243.204 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538',
-	format('Select id from ticket_detail where last_modified_on > %L ',last_modified_colum_td))
-	as t(id bigint)
-	);
+newids := tid;
 	reclen := array_length(newids,1)::varchar;
 	records := 'Records updated; Count - ' || reclen;
 	raise notice 'Fetch new id Completed time %', transaction_timestamp();
 	IF array_length(newids,1) >= 1 THEN
 	raise notice '%', array_to_string(newids,',');
-   
  
 INSERT INTO public.ticket_detail ("id","org_id","brand_id","org_brand_id","brand_name","Opportunity Name","is_visible_in_customer_portal","requested_by","requester","assigned_to_user_id","assignee","AR Rep","assigned_to_group_id","group","contact_group_id","contact_group","resolution_due_on","ticket_status_id","status","ticket_source_id","source","update_count","note_count","attachment_count","work_log_count","total_time_logged","total_billable_time_logged","first_response_due_on","next_response_due_on","last_replied_on","last_replied_by_id","last_replied_by","last_replied_by_user_type_id","last_replied_by_user_type","closed_on","closed_by","closed_by_name","created_on","created_by","creator","last_modified_on","last_modified_by","Last Modified By","is_spam","is_active","tsv","is_resolution_date_modified","last_status_changed_on","is_first_response_updated","ticket_type_option_id","ticket_category_option_id","ticket_priority_id","priority","Account Name","subject","type","category","email","OpportunityOwner","time_spent","unique_external_reference_id","agentid","isnotesprivate","notetype","assigned","cf_amount","cf_opp_dt_order_id","cf_link_to_bold_order","cf_expected_payment_date","cf_group_car_rep","cf_secondary_lead_source","cf_contract_renewal_date","cf_contract_renewal_amount","cf_reinstate_reason","cf_last_crr_rep_contact","cf_country","cf_date_reviewed","cf_nonrenewal_reason","cf_cleared_by_jv","cf_order_sheet_status")
 SELECT * from public.get_ticket_detail3(
@@ -600,6 +596,14 @@ LEFT Join ticket_link tl_new on t.id = tl_new.source_ticket_id
 LEFt Join ticket_detail td_new on tl_new.destination_ticket_id = td_new.id where td_new.unique_external_reference_id != '''' and td_new.title  like ''RETURN%%''
  ',array_to_string(newids,',')))  as ticket(ticketid bigint,id bigint) ) subquery
 where ticket_detail.id=subquery.ticketid;
+
+update ticket_Detail set "last_activity_date" =sub."last_activity_date" 
+from 
+(
+	Select ticket.id,ticket.last_activity_date  FROM dblink('host=35.236.243.204 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538', 
+ format('select ticket_id,max(last_modified_on) from ticket_update where  is_private=false and ticket_id in (%s)  group by ticket_id ',array_to_string(newids,','))) ticket(id bigint,last_activity_date timestamp)
+) sub
+where ticket_Detail.id=sub.id ;
 insert into incremental_refresh_detail(recordcount,modified_on) values ('records updated' || reclen || ' ,Values'|| array_to_string(newids,','),CURRENT_TIMESTAMP);
 
  
@@ -787,26 +791,24 @@ Subject=EXCLUDED.Subject,
 cf_task_name=EXCLUDED.cf_task_name,
 cf_external_reference_id=EXCLUDED.cf_external_reference_id;
   RAISE INFO 'history table Records updated  : % ', reclen;
-update ticket_Detail set "Current Opportunity Owner Manager" =null 
-where email in ('danielj@syncfusion.com');
 
-update ticket_Detail set "Current Opportunity Owner Manager" ='Batrice Ramsey'
-where email in ('natashalizz@syncfusion.com');
+update ticket_Detail set cf_manager_at_time_of_sale = sub.cf_manager_at_time_of_sale
+from (
+	select * FROM dblink('host=35.236.243.204 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538'::text, 
+		format('select t.id,mats.name as cf_manager_at_time_of_sale  FROM (select * from ticket_detail where  id in (%s) and is_active=true ) t,
+						  jsonb_to_record(t.custom_fields) fields("1332" varchar)
+LEFT Join users mats on mats.email=fields."1332"
+						 '	,array_to_string(newids,','))   ) ticket_detail(id bigint,cf_manager_at_time_of_sale varchar)
+)sub
+where ticket_Detail.id = sub.id;
 
-
-update ticket_Detail set "Current Opportunity Owner Manager" ='Ryan Madison'
-where email='faithongoche@syncfusion.com';
-
-update ticket_Detail set "Current Opportunity Owner Manager" ='Ryan Madison'
-where email in ('terrydama@syncfusion.com@syncfusion.com');
-
-update ticket_Detail set "Current Opportunity Owner Manager" ='Ryan Madison'
-where email in ('sherylakinyio@syncfusion.com');
-update ticket_Detail set "Current Opportunity Owner Manager" ='Ryan Madison'
-where email in ('jacintahmideri@syncfusion.com');
-
-update ticket_Detail set "Current Opportunity Owner Manager" ='Sandy Lill'
-where email='daniellem@syncfusion.com';
+insert into child_beta_quote_ticket_Detail ("parentid","id","org_id","brand_id","org_brand_id","brand_name","Opportunity Name","is_visible_in_customer_portal","requested_by","requester","assigned_to_user_id","assignee","AR Rep","assigned_to_group_id","group","contact_group_id","contact_group","resolution_due_on","ticket_status_id","status","ticket_source_id","source","update_count","note_count","attachment_count","work_log_count","total_time_logged","total_billable_time_logged","first_response_due_on","next_response_due_on","last_replied_on","last_replied_by_id","last_replied_by","last_replied_by_user_type_id","last_replied_by_user_type","closed_on","closed_by","closed_by_name","created_on","created_by","creator","last_modified_on","last_modified_by","Last Modified By","is_spam","is_active","tsv","is_resolution_date_modified","last_status_changed_on","is_first_response_updated","ticket_type_option_id","ticket_category_option_id","ticket_priority_id","priority","subject","type","category","email","OpportunityOwner","unique_external_reference_id","agentid","isnotesprivate","notetype","assigned","cf_quote_line_items","cf_quote_number","cf_expiration_date","cf_order_form_for","cf_net_amount","cf_tax","cf_grand_total","cf_quote_name","cf_bq_email","cf_phone","cf_fax","cf_bq_status","contactname","Account Name","cf_bill_to_name","cf_ship_to_name","cf_bq_billing_street","cf_bq_billing_city","cf_bq_billing_state","cf_bq_billing_country","cf_bq_billing_postal_code","cf_bq_shipping_street","cf_bq_shipping_city","cf_bq_shipping_state","cf_shipping_country","cf_shipping_postal_code","cf_external_reference_id","cf_email_subject")
+select * from get_related_beta_quote_ticket_detail(
+	array_to_string(newids,',')
+)
+ON CONFLICT ("parentid","id") 
+DO 
+   UPDATE SET "parentid"=EXCLUDED.parentid ,"id"=EXCLUDED.id ,"org_id"=EXCLUDED.org_id,"brand_id"=EXCLUDED.brand_id ,"org_brand_id"=EXCLUDED.org_brand_id ,"brand_name"=EXCLUDED.brand_name ,"Opportunity Name"=EXCLUDED."Opportunity Name" ,"is_visible_in_customer_portal"=EXCLUDED.is_visible_in_customer_portal ,"requested_by"=EXCLUDED.requested_by ,"requester"=EXCLUDED.requester ,"assigned_to_user_id"=EXCLUDED.assigned_to_user_id ,"assignee"=EXCLUDED.assignee ,"AR Rep"=EXCLUDED."AR Rep" ,"assigned_to_group_id"=EXCLUDED.assigned_to_group_id ,"group"=EXCLUDED.group ,"contact_group_id"=EXCLUDED.contact_group_id ,"contact_group"=EXCLUDED.contact_group ,"resolution_due_on"=EXCLUDED.resolution_due_on ,"ticket_status_id"=EXCLUDED.ticket_status_id ,"status"=EXCLUDED.status ,"ticket_source_id"=EXCLUDED.ticket_source_id ,"source"=EXCLUDED.source ,"update_count"=EXCLUDED.update_count ,"note_count"=EXCLUDED.note_count ,"attachment_count"=EXCLUDED.attachment_count ,"work_log_count"=EXCLUDED.work_log_count ,"total_time_logged"=EXCLUDED.total_time_logged ,"total_billable_time_logged"=EXCLUDED.total_billable_time_logged ,"first_response_due_on"=EXCLUDED.first_response_due_on ,"next_response_due_on"=EXCLUDED.next_response_due_on ,"last_replied_on"=EXCLUDED.last_replied_on ,"last_replied_by_id"=EXCLUDED.last_replied_by_id ,"last_replied_by"=EXCLUDED.last_replied_by ,"last_replied_by_user_type_id"=EXCLUDED.last_replied_by_user_type_id ,"last_replied_by_user_type"=EXCLUDED.last_replied_by_user_type ,"closed_on"=EXCLUDED.closed_on ,"closed_by"=EXCLUDED.closed_by ,"closed_by_name"=EXCLUDED.closed_by_name ,"created_on"=EXCLUDED.created_on ,"created_by"=EXCLUDED.created_by ,"creator"=EXCLUDED.creator ,"last_modified_on"=EXCLUDED.last_modified_on ,"last_modified_by"=EXCLUDED.last_modified_by ,"Last Modified By"=EXCLUDED."Last Modified By" ,"is_spam"=EXCLUDED.is_spam ,"is_active"=EXCLUDED.is_active ,"tsv"=EXCLUDED.tsv ,"is_resolution_date_modified"=EXCLUDED.is_resolution_date_modified ,"last_status_changed_on"=EXCLUDED.last_status_changed_on ,"is_first_response_updated"=EXCLUDED.is_first_response_updated ,"ticket_type_option_id"=EXCLUDED.ticket_type_option_id ,"ticket_category_option_id"=EXCLUDED.ticket_category_option_id ,"ticket_priority_id"=EXCLUDED.ticket_priority_id ,"priority"=EXCLUDED.priority ,"subject"=EXCLUDED.subject ,"type"=EXCLUDED.type ,"category"=EXCLUDED.category ,"email"=EXCLUDED.email ,"OpportunityOwner"=EXCLUDED."OpportunityOwner" ,"unique_external_reference_id"=EXCLUDED.unique_external_reference_id ,"agentid"=EXCLUDED.agentid ,"isnotesprivate"=EXCLUDED.isnotesprivate ,"notetype"=EXCLUDED.notetype ,"assigned"=EXCLUDED.assigned ,"cf_quote_line_items"=EXCLUDED.cf_quote_line_items ,"cf_quote_number"=EXCLUDED.cf_quote_number ,"cf_expiration_date"=EXCLUDED.cf_expiration_date ,"cf_order_form_for"=EXCLUDED.cf_order_form_for ,"cf_net_amount"=EXCLUDED.cf_net_amount ,"cf_tax"=EXCLUDED.cf_tax ,"cf_grand_total"=EXCLUDED.cf_grand_total ,"cf_quote_name"=EXCLUDED.cf_quote_name ,"cf_bq_email"=EXCLUDED.cf_bq_email ,"cf_phone"=EXCLUDED.cf_phone ,"cf_fax"=EXCLUDED.cf_fax ,"cf_bq_status"=EXCLUDED.cf_bq_status ,"contactname"=EXCLUDED.contactname ,"Account Name"=EXCLUDED."Account Name" ,"cf_bill_to_name"=EXCLUDED.cf_bill_to_name ,"cf_ship_to_name"=EXCLUDED.cf_ship_to_name ,"cf_bq_billing_street"=EXCLUDED.cf_bq_billing_street ,"cf_bq_billing_city"=EXCLUDED.cf_bq_billing_city ,"cf_bq_billing_state"=EXCLUDED.cf_bq_billing_state ,"cf_bq_billing_country"=EXCLUDED.cf_bq_billing_country ,"cf_bq_billing_postal_code"=EXCLUDED.cf_bq_billing_postal_code ,"cf_bq_shipping_street"=EXCLUDED.cf_bq_shipping_street ,"cf_bq_shipping_city"=EXCLUDED.cf_bq_shipping_city ,"cf_bq_shipping_state"=EXCLUDED.cf_bq_shipping_state ,"cf_shipping_country"=EXCLUDED.cf_shipping_country ,"cf_shipping_postal_code"=EXCLUDED.cf_shipping_postal_code ,"cf_external_reference_id"=EXCLUDED.cf_external_reference_id ,"cf_email_subject"=EXCLUDED.cf_email_subject;
   ELSE  
     raise notice 'No New Records';
 	END IF;
