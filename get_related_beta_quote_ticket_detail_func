@@ -1,0 +1,123 @@
+-- FUNCTION: public.get_related_beta_quote_ticket_detail(character varying)
+
+-- DROP FUNCTION IF EXISTS public.get_related_beta_quote_ticket_detail(character varying);
+
+CREATE OR REPLACE FUNCTION public.get_related_beta_quote_ticket_detail(
+	ticketid character varying)
+    RETURNS TABLE(parentid bigint, id bigint, org_id integer, brand_id integer, org_brand_id integer, brand_name text, "Opportunity Name" text, is_visible_in_customer_portal boolean, requested_by bigint, requester text, assigned_to_user_id bigint, assignee text, "AR Rep" text, assigned_to_group_id integer, "group" text, contact_group_id bigint, contact_group text, resolution_due_on timestamp with time zone, ticket_status_id integer, status text, ticket_source_id integer, source text, update_count integer, note_count integer, attachment_count integer, work_log_count integer, total_time_logged integer, total_billable_time_logged integer, first_response_due_on timestamp with time zone, next_response_due_on timestamp with time zone, last_replied_on timestamp with time zone, last_replied_by_id bigint, last_replied_by text, last_replied_by_user_type_id integer, last_replied_by_user_type text, closed_on timestamp with time zone, closed_by bigint, closed_by_name text, created_on timestamp with time zone, created_by bigint, creator text, last_modified_on timestamp with time zone, last_modified_by bigint, "Last Modified By" text, is_spam boolean, is_active boolean, tsv tsvector, is_resolution_date_modified boolean, last_status_changed_on timestamp with time zone, is_first_response_updated boolean, ticket_type_option_id bigint, ticket_category_option_id bigint, ticket_priority_id integer, priority text, subject text, type text, category text, email character varying, "OpportunityOwner" text, unique_external_reference_id text, agentid bigint, isnotesprivate boolean, notetype text, assigned text, cf_quote_line_items character varying, cf_quote_number bigint, cf_expiration_date timestamp without time zone, cf_order_form_for character varying, cf_net_amount numeric, cf_tax numeric, cf_grand_total numeric, cf_quote_name character varying, cf_bq_email character varying, cf_phone character varying, cf_fax character varying, cf_bq_status character varying, contactname character varying, "Account Name" text, cf_bill_to_name character varying, cf_ship_to_name character varying, cf_bq_billing_street character varying, cf_bq_billing_city character varying, cf_bq_billing_state character varying, cf_bq_billing_country character varying, cf_bq_billing_postal_code character varying, cf_bq_shipping_street character varying, cf_bq_shipping_city character varying, cf_bq_shipping_state character varying, cf_shipping_country character varying, cf_shipping_postal_code character varying, cf_external_reference_id character varying, cf_email_subject character varying) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+
+begin
+	return query 
+
+ select ticket.parentid,ticket.id,
+ td.org_id,
+    td.brand_id,
+    td.org_brand_id,
+    td.brand_name,
+    td."Opportunity Name",
+    td.is_visible_in_customer_portal,
+    td.requested_by,
+    td.requester,
+    td.assigned_to_user_id,
+    td.assignee,
+    td."AR Rep",
+    td.assigned_to_group_id,
+    td."group",
+    td.contact_group_id,
+    td.contact_group,
+    td.resolution_due_on,
+    td.ticket_status_id,
+    td.status,
+    td.ticket_source_id,
+    td.source,
+    td.update_count,
+    td.note_count,
+    td.attachment_count,
+    td.work_log_count,
+    td.total_time_logged,
+    td.total_billable_time_logged,
+    td.first_response_due_on,
+    td.next_response_due_on,
+    td.last_replied_on,
+    td.last_replied_by_id,
+    td.last_replied_by,
+    td.last_replied_by_user_type_id,
+    td.last_replied_by_user_type,
+    td.closed_on,
+    td.closed_by,
+    td.closed_by_name,
+    td.created_on,
+    td.created_by,
+    td.creator,
+    td.last_modified_on,
+    td.last_modified_by,
+    td."Last Modified By",
+    td.is_spam,
+    td.is_active,
+    td.tsv,
+    td.is_resolution_date_modified,
+    td.last_status_changed_on,
+    td.is_first_response_updated,
+    td.ticket_type_option_id,
+    td.ticket_category_option_id,
+    td.ticket_priority_id,
+    td.priority,
+    td.subject,
+    td.type,
+    td.category,
+    td.email,
+    td."OpportunityOwner",
+    td.unique_external_reference_id,
+    td.agentid,   
+    td.isnotesprivate,
+    td.notetype,
+    td.assigned,
+	td.cf_quote_line_items,
+td.cf_quote_number,
+td.cf_expiration_date,
+td.cf_order_form_for,
+td.cf_net_amount,
+td.cf_tax,
+td.cf_grand_total,
+td.cf_quote_name,
+td.cf_bq_email,
+td.cf_phone,
+td.cf_fax,
+td.cf_bq_status,
+td.contactname,
+td."Account Name",
+td.cf_bill_to_name,
+td.cf_ship_to_name,
+td.cf_bq_billing_street,
+td.cf_bq_billing_city,
+td.cf_bq_billing_state,
+td.cf_bq_billing_country,
+td.cf_bq_billing_postal_code,
+td.cf_bq_shipping_street,
+td.cf_bq_shipping_city,
+td.cf_bq_shipping_state,
+td.cf_shipping_country,
+td.cf_shipping_postal_code,
+td.cf_external_reference_id,
+td.cf_email_subject
+
+ FROM dblink('host=35.236.243.204 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538'::text,
+											 format( '
+select td.id as parentid,t.id FROM (select * from ticket_detail where  id in (%s) and is_active=true) td
+     LEFT JOIN ticket_link tl ON tl.destination_ticket_id = td.id AND tl.ticket_link_type_id = 1 and tl.is_active=true
+     LEFT JOIN ticket_detail t ON t.id = tl.source_ticket_id and t.ticket_category_option_id = 5 and t.is_active=true
+where t.id>0
+											  ',ticketid) ) as ticket(parentid bigint,id bigint)
+LEFT Join ticket_DEtail td on td.id=ticket.id ;
+	end;
+
+$BODY$;
+
+ALTER FUNCTION public.get_related_beta_quote_ticket_detail(character varying)
+    OWNER TO bolddeskuser;
