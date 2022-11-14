@@ -6,7 +6,6 @@ CREATE OR REPLACE PROCEDURE public.incremental_refresh_ticket_detail(
 	INOUT records character varying)
 LANGUAGE 'plpgsql'
 AS $BODY$
-
 DECLARE
   
 
@@ -14,16 +13,21 @@ last_modified_colum_td timestamp with time zone;
  newids bigint[];
  _id bigint;
  reclen varchar;
- records varchar;
 BEGIN
 select max(last_modified_on) into last_modified_colum_td from ticket_detail;
 raise notice 'data modified column in  ticket detail %', last_modified_colum_td;
-newids := tid;
+newids := ARRAY(
+select  id  from  public.dblink(
+'host=35.236.243.204 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538',
+	format('Select id from ticket_detail where last_modified_on > %L ',last_modified_colum_td))
+	as t(id bigint)
+	);
 	reclen := array_length(newids,1)::varchar;
 	records := 'Records updated; Count - ' || reclen;
 	raise notice 'Fetch new id Completed time %', transaction_timestamp();
 	IF array_length(newids,1) >= 1 THEN
 	raise notice '%', array_to_string(newids,',');
+   
  
 INSERT INTO public.ticket_detail ("id","org_id","brand_id","org_brand_id","brand_name","Opportunity Name","is_visible_in_customer_portal","requested_by","requester","assigned_to_user_id","assignee","AR Rep","assigned_to_group_id","group","contact_group_id","contact_group","resolution_due_on","ticket_status_id","status","ticket_source_id","source","update_count","note_count","attachment_count","work_log_count","total_time_logged","total_billable_time_logged","first_response_due_on","next_response_due_on","last_replied_on","last_replied_by_id","last_replied_by","last_replied_by_user_type_id","last_replied_by_user_type","closed_on","closed_by","closed_by_name","created_on","created_by","creator","last_modified_on","last_modified_by","Last Modified By","is_spam","is_active","tsv","is_resolution_date_modified","last_status_changed_on","is_first_response_updated","ticket_type_option_id","ticket_category_option_id","ticket_priority_id","priority","Account Name","subject","type","category","email","OpportunityOwner","time_spent","unique_external_reference_id","agentid","isnotesprivate","notetype","assigned","cf_amount","cf_opp_dt_order_id","cf_link_to_bold_order","cf_expected_payment_date","cf_group_car_rep","cf_secondary_lead_source","cf_contract_renewal_date","cf_contract_renewal_amount","cf_reinstate_reason","cf_last_crr_rep_contact","cf_country","cf_date_reviewed","cf_nonrenewal_reason","cf_cleared_by_jv","cf_order_sheet_status")
 SELECT * from public.get_ticket_detail3(
@@ -791,7 +795,25 @@ Subject=EXCLUDED.Subject,
 cf_task_name=EXCLUDED.cf_task_name,
 cf_external_reference_id=EXCLUDED.cf_external_reference_id;
   RAISE INFO 'history table Records updated  : % ', reclen;
+update ticket_Detail set "Current Opportunity Owner Manager" =null 
+where email in ('danielj@syncfusion.com');
 
+update ticket_Detail set "Current Opportunity Owner Manager" ='Batrice Ramsey'
+where email in ('natashalizz@syncfusion.com');
+
+update ticket_Detail set "Current Opportunity Owner Manager" ='Ryan Madison'
+where email='faithongoche@syncfusion.com';
+
+update ticket_Detail set "Current Opportunity Owner Manager" ='Ryan Madison'
+where email in ('terrydama@syncfusion.com@syncfusion.com');
+
+update ticket_Detail set "Current Opportunity Owner Manager" ='Ryan Madison'
+where email in ('sherylakinyio@syncfusion.com');
+update ticket_Detail set "Current Opportunity Owner Manager" ='Ryan Madison'
+where email in ('jacintahmideri@syncfusion.com');
+
+update ticket_Detail set "Current Opportunity Owner Manager" ='Sandy Lill'
+where email='daniellem@syncfusion.com';
 update ticket_Detail set cf_manager_at_time_of_sale = sub.cf_manager_at_time_of_sale
 from (
 	select * FROM dblink('host=35.236.243.204 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538'::text, 
