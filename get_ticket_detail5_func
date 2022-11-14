@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION public.get_ticket_detail5(
 	ticketid character varying)
-    RETURNS TABLE(id bigint, cf_case_number character varying, cf_downloaded_date timestamp without time zone, cf_key_order_issue text, cf_term_12_months boolean, cf_date_moved_to_not_renewing date, cf_adobe_sign_exp_date date, cf_next_cl_contact date, cf__of_years_in_next_payment_term numeric, cf__of_years_in_previous_payment_term numeric, cf_ap_processed_alliance_fee date, cf_days_to_pay_alliance_partner integer, cf_alliance_fee_tier text, cf_alliance_partner_order_status text, cf_biz_dev_reviewed date, cf_csr_returned_for_correction date, cf_dt_expiration_date timestamp without time zone, cf_original_license_type text, cf_opp_alliance_partner text, cf_return_details text, cf_original_closedwon_date timestamp without time zone, cf_current_subscription_term character varying, cf_last_customer_contact date, cf_opportunity_name character varying, cf_lead_source character varying, cf_next_ar_contact date, cf_opp_presale_contract_request boolean, cf_end_date date, cf_ren_audit_review text, cf_counsel_reviewed text, cf_flagged_by_mahas_team date, cf_submitted_for_approval timestamp without time zone, cf_order_reviewed_by character varying, cf_group_account_name character varying, cf_payment_frequency text, cf_submitted_to_counsel_review date, cf_2nd_contact_date timestamp without time zone, cf_case_type text, cf_return_notes character varying, cf_engagement_status text, cf_product text, cf_review_link character varying, cf_contract_license_ordered text, cf_ar_license_ordered text, cf_opp_has_problematic_pricing boolean, cf_renewal_amount_this_year numeric, cf_days_since_contact character varying, cf_my_call_list_est text, cf_order_sheet_name character varying, cf_date_signed_by_syncfusion timestamp without time zone, cf_invoice_due_date timestamp without time zone, cf_return_identified_by text, cf_contract_sent timestamp without time zone, cf_paralegal_contracts_to_returncancel timestamp without time zone, cf_total_contract_amount numeric, cf_order_sheet_incomplete timestamp without time zone, cf_salescr_action_needed timestamp without time zone, cf_link_to_return_opportunity character varying, cf_company character varying, cf_opportunity_category character varying, cf_product_or_plan text, cf_revenue_type text, cf_call_country text, cf_last_renewal_order_id character varying, cf_demo_scheduled timestamp without time zone, cf_reason_lost_comments character varying, cf_opportunity_source character varying, cf_download_country character varying, cf_reason_lost text, cf_alliance_partner_status text, cf_customerid character varying, cf_no_of_order_sheets_in_opp character varying, cf_previous_dt_order_amount numeric, cf_manager_at_time_of_sale character varying, cf_department character varying, cf_known_company_url character varying, cf_secondary_ap_contact character varying, cf_is_invoice_collectible text, cf_problematic_pricing_acct timestamp without time zone, cf_tier_1_country_code character varying) 
+    RETURNS TABLE(id bigint, cf_case_number character varying, cf_downloaded_date timestamp without time zone, cf_key_order_issue text, cf_term_12_months boolean, cf_date_moved_to_not_renewing date, cf_adobe_sign_exp_date date, cf_next_cl_contact date, cf__of_years_in_next_payment_term numeric, cf__of_years_in_previous_payment_term numeric, cf_ap_processed_alliance_fee date, cf_days_to_pay_alliance_partner integer, cf_alliance_fee_tier text, cf_alliance_partner_order_status text, cf_biz_dev_reviewed date, cf_csr_returned_for_correction date, cf_dt_expiration_date timestamp without time zone, cf_original_license_type text, cf_opp_alliance_partner text, cf_return_details text, cf_original_closedwon_date timestamp without time zone, cf_current_subscription_term character varying, cf_last_customer_contact date, cf_opportunity_name character varying, cf_lead_source character varying, cf_next_ar_contact date, cf_opp_presale_contract_request boolean, cf_end_date timestamp without time zone, cf_ren_audit_review text, cf_counsel_reviewed text, cf_flagged_by_mahas_team date, cf_submitted_for_approval timestamp without time zone, cf_order_reviewed_by character varying, cf_group_account_name character varying, cf_payment_frequency text, cf_submitted_to_counsel_review date, cf_2nd_contact_date timestamp without time zone, cf_case_type text, cf_return_notes character varying, cf_engagement_status text, cf_product text, cf_review_link character varying, cf_contract_license_ordered text, cf_ar_license_ordered text, cf_opp_has_problematic_pricing boolean, cf_renewal_amount_this_year numeric, cf_days_since_contact character varying, cf_my_call_list_est text, cf_order_sheet_name character varying, cf_date_signed_by_syncfusion timestamp without time zone, cf_invoice_due_date timestamp without time zone, cf_return_identified_by text, cf_contract_sent timestamp without time zone, cf_paralegal_contracts_to_returncancel timestamp without time zone, cf_total_contract_amount numeric, cf_order_sheet_incomplete timestamp without time zone, cf_salescr_action_needed timestamp without time zone, cf_link_to_return_opportunity character varying, cf_company character varying, cf_opportunity_category character varying, cf_product_or_plan text, cf_revenue_type text, cf_call_country text, cf_last_renewal_order_id character varying, cf_demo_scheduled timestamp without time zone, cf_reason_lost_comments character varying, cf_opportunity_source character varying, cf_download_country character varying, cf_reason_lost text, cf_alliance_partner_status text, cf_customerid character varying, cf_no_of_order_sheets_in_opp character varying, cf_previous_dt_order_amount numeric, cf_manager_at_time_of_sale character varying, cf_department character varying, cf_known_company_url character varying, cf_secondary_ap_contact character varying, cf_is_invoice_collectible text, cf_problematic_pricing_acct timestamp without time zone, cf_tier_1_country_code character varying) 
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
@@ -139,7 +139,7 @@ SELECT ticket_detail.id,
     fields."1366" AS cf_lead_source,
     fields."1508" AS cf_next_ar_contact,
     fields."1516" AS cf_opp_presale_contract_request,
-    fields."1517" AS cf_end_date,
+    fields."1627" AS cf_end_date,
     ( SELECT field_option.option_value
            FROM field_option
           WHERE field_option.id = fields."1519") AS cf_ren_audit_review,
@@ -433,8 +433,9 @@ SELECT ticket_detail.id,
 "1613" varchar,
 "1614" varchar,
 "1235" bigint,
-"1213" decimal(36,6))
-	  LEFT Join users carrep on carrep.email=fields."1335",
+"1213" decimal(36,6),
+					 "1627" timestamp)
+	  LEFT Join users carrep on carrep.email=fields."1335"  ,
      jsonb_to_record(cg.custom_fields) contactgroup("1083" character varying, "1044" character varying, "1058" boolean, "1079" character varying, "1080" character varying, "1170" bigint, "1291" character varying,"1336" varchar)  
 					   ,jsonb_to_record(requester.custom_fields) contact("1626" varchar,
 "1023" varchar,
@@ -509,7 +510,7 @@ SELECT ticket_detail.id,
  cf_lead_source character varying,
  cf_next_ar_contact date,
  cf_opp_presale_contract_request boolean,
- cf_end_date date,
+ cf_end_date timestamp without time zone,
  cf_ren_audit_review text,
  cf_counsel_reviewed text,
  cf_flagged_by_mahas_team date,
