@@ -1,0 +1,2 @@
+"schemaname","tablename","indexname","tablespace","indexdef"
+"public","child_beta_quote_ticket_detail","child_beta_quote_ticket_detail_pkey",NULL,"CREATE UNIQUE INDEX child_beta_quote_ticket_detail_pkey ON public.child_beta_quote_ticket_detail USING btree (parentid, id)"
