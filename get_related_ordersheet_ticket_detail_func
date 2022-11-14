@@ -205,7 +205,7 @@ fields."1156"  as "cf_returned_for_corrections",
 		  
 
 date_part(''day'', fields."1153" - fields."1151") AS "Sales Admin Review Days",
-date_part(''day'', fields."1153" - (case when tst1.label_for_agent != ''Closed'' then td.resolution_due_on else td.closed_on end)) AS "Close Date to Processed",
+date_part(''day'', fields."1160" - (case when tst1.label_for_agent != ''Closed'' then td.resolution_due_on else td.closed_on end)) AS "Close Date to Processed",
 date_part(''day'', fields."1160"-fields."1153") AS "Days to Process",
 date_part(''day'', CURRENT_DATE - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) AS "Days Since Close Date",
 CASE WHEN tst.label_for_agent = ''Closed'' THEN date_part(''day'', t.closed_on - t.created_on) ELSE date_part(''day'', CURRENT_DATE - t.created_on) END AS "Days Open",
@@ -228,8 +228,8 @@ date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' 
 
 		  
   FROM (select * from ticket_detail where ticket_category_option_id = 4 and id in (%s)) td
-     LEFT JOIN ticket_link tl ON tl.destination_ticket_id = td.id AND tl.ticket_link_type_id = 1
-     LEFT JOIN ticket_detail t ON t.id = tl.source_ticket_id and t.ticket_category_option_id = 3617
+     LEFT JOIN ticket_link tl ON tl.destination_ticket_id = td.id AND tl.ticket_link_type_id = 1 and  tl.is_Active=true
+     LEFT JOIN ticket_detail t ON t.id = tl.source_ticket_id and t.ticket_category_option_id = 3617 and t.is_active=true
      LEFT JOIN brand b ON b.org_brand_id = t.org_brand_id
      LEFT JOIN ticket_status tst ON tst.id = t.ticket_status_id
      LEFT JOIN ticket_status tst1 ON tst1.id = td.ticket_status_id
