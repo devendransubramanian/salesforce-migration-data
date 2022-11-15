@@ -1,0 +1,37 @@
+Cases with Opportunity, Marketing Engagement with Opportunity  and Opportunity with related Opportunity 
+
+  
+
+This cross-object reports refers to use Opportunity columns and All Cases,Marketing Engagement  columns in the same report. 
+
+  
+
+Report Link : https://syncfusion.lightning.force.com/lightning/r/Report/00O3j000008BcvgEAC/view 
+
+  
+
+Cases With Opportunity: 
+
+select t.cf_case_number,opp."Opportunity Name",t.cf_record_type from ticket_detail t left join related_opp_ticket_detail opp on opp.parentid=t.id 
+
+  
+
+where t.Category='Cases' and t.cf_record_type='Compliance' and opp.stage='Closed Won' and t.created_on > '2019-08-01' limit 100 
+
+  
+
+  
+
+Marketing Engagement with Opportunity 
+
+  
+
+  
+
+select t.subject,opp."Opportunity Name",t.cf_record_type from ticket_detail t left join related_opp_ticket_detail opp on opp.parentid=t.id 
+
+  
+
+where t.Category='Marketing Engagements' and t.cf_record_type='Bold Partner Outreach' and opp."Opportunity Name" is not null 
+
+  

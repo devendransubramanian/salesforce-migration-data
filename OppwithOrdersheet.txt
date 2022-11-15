@@ -1,0 +1,17 @@
+Opportunities with Order Sheets 
+
+  
+
+This cross-object reports refers to use Opportunity columns and OrderSheet columns in the same report. 
+
+  
+
+For ex: 
+
+Report link https://syncfusion.lightning.force.com/lightning/r/Report/00O3j000007cyn9EAA/view?queryScope=userFolders  
+
+  
+
+Sample Query : 
+
+select t."OpportunityOwner",t."Opportunity Name",os.cf_order_sheet_name,os.cf_bold_commissionable_amount,os.cf_eventual_monthly_payment,os.cf_payment_frequency,t.closed_on,os.cf_product_1_name,t."OpportunityOwner" from ticket_Detail t left Join related_ordersheet_ticket_Detail os on t.id = os.parentid where t.closed_on between '2022-05-01' and '2022-06-01' and os.cf_record_type='BoldBI Order Sheet' and t.stage = 'Closed Won' 

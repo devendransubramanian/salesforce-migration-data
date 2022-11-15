@@ -1,0 +1,28 @@
+Opportunities with Beta Quote 
+
+  
+
+This cross-object reports refers to use Opportunity columns and Beta Quote columns in the same report. 
+
+  
+
+For ex: 
+
+Report link https://syncfusion.lightning.force.com/lightning/r/Report/00O2A000007Q020UAC/view  
+
+  
+
+Sample Query : 
+
+select  td.id, td.contact_group_id, td.assigned_to_user_id, td."Opportunity Name" , td.cf_dt_expiration_date, td.cf_contract_reviewed, td.cf_previous_dt_order_amount, 
+td.cf_contract_renewal_date, td.cf_contract_renewal_amount, td.closed_on, td."Eligible Date to Close", td."Account Name", rotd.created_on, betq.created_on 
+from ticket_detail td left join related_ordersheet_ticket_detail rotd on rotd.parentid = td.id 
+LEFT Join child_beta_quote_ticket_DEtail betaq on betaq.parentid=td.id 
+where td.closed_on between '01/01/2000' and '12/31/2023' 
+and td.cf_renewal_status in ('Complete') 
+and td.cf_dt_expiration_date between '10/01/2022' and '12/31/2022' 
+and td.cf_contract_reviewed in  ('Active Contract') 
+and td.stage not in ('Closed Lost') 
+and td."OpportunityOwner" in ('Pat Staley','Tara Ubbens','Jimmy DeBruhl','Stephen Hoggard') 
+
+ 

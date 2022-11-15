@@ -1,0 +1,21 @@
+Opportunities with Activities Email/Call 
+
+  
+
+Activities Call and email was linked with Opportunity  
+
+  
+
+https://syncfusion.lightning.force.com/lightning/r/Report/00O2A000006vJR5UAM/view 
+
+  
+
+select date(act.created_on),t."Opportunity Name",act.created_on, act.assigned,case when tagid=38 then act.created_on else null end as "Time Activity Logged",act.subject from ticket_Detail t 
+
+  
+
+LEFT Join child_activitiescallemail_ticket_detail act 
+
+on t.id=act.id where act.created_on between '2022-05-12' and '2022-05-12 23:59:59' and act.assigned = 'Akinyi Vivian' 
+
+order by t."Opportunity Name" 

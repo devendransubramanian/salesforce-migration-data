@@ -1,0 +1,27 @@
+Opportunities with AR 
+
+  
+
+This cross-object reports refers to use Opportunity columns and AR columns in the same report. 
+
+  
+
+For ex: 
+
+Report link https://syncfusion.lightning.force.com/lightning/r/Report/00O2A000007Pw42UAC/view?queryScope=userFolders   
+
+  
+
+Sample Query : 
+
+select t.id,pt.id, t.unique_external_reference_id, pt.cf_dt_order_id, pt.cf_outstanding_amount, 
+
+    pt.cf_total_invoice_amount, pt.cf_last_ar_contact, pt.cf_collection_legal_status, 
+
+    t."Opportunity Name", t."Account Name", pt.cf_ar_status, t.stage,pt."AR Rep" from public.ticket_detail t 
+
+    LEFT Join public.child_ar_ticket_detail pt on t.id = pt.parentid 
+
+    where t.closed_on between '2021-04-01' and '2021-05-01'   and t.stage like '%Closed Won%' 
+
+  

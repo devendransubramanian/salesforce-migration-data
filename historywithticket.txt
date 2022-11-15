@@ -1,0 +1,29 @@
+Ticket with history data 
+
+  
+
+history_ticket_Detail have details about the following columns 
+
+  
+
+Salesforce columns          history_ticket_Detail 
+
+Edited by                           "Edited By" 
+
+Edit Date                            Edit Date 
+
+Field/Event                        "FieldName" 
+
+Old Value                            "Old Value" 
+
+New Value                          "New Value" 
+
+  
+
+  
+
+Sample query 
+
+  
+
+select t.id,h.* from ticket_detail t left join history_ticket_Detail h on t.id=h.ticket_id where t.closed_on between '2022-08-01' and '2022-08-31 23:59:59' 

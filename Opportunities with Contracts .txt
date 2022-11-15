@@ -1,0 +1,21 @@
+Opportunities with Contracts 
+
+  
+
+This cross-object reports refers to use Opportunity columns and Contract columns in the same report. 
+
+  
+
+  
+
+Report Link: https://syncfusion.lightning.force.com/lightning/r/Report/00O2A000007TZf8UAG/view  
+
+Sample Query: 
+
+select t.id,pt.cf_salescr_action_type, 
+
+    t."Opportunity Name", t."Account Name", t.closed_on,t."OpportunityOwner" from public.ticket_detail t 
+
+    LEFT Join public.child_contract_ticket_detail pt on t.id = pt.parentid 
+
+    where pt.cf_contract_complete_or_closed between '2022-08-01' and '2022-08-31' and pt.cf_contract_status='Returned/Cancelled'   and t.stage like '%Closed Won%' 

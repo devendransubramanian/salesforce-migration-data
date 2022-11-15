@@ -1,0 +1,21 @@
+AR/Contract  with Opportunity 
+
+This cross-object reports refers to use columns  AR OR Contract columns with  Opportunity in the same report. 
+
+  
+
+Report Link: https://syncfusion.lightning.force.com/lightning/r/Report/00O3j000008B6mSEAS/view  
+
+  
+
+select count(*) 
+
+       from ticket_Detail ticket LEFT Join public.parent_opp_ticket_detail ct on ticket.id = ct.parentid 
+
+        where ticket.category in ('Opportunity', 'AR', 'Contract') and 
+
+       (ticket.closed_on between (date('2022-05-01') || ' 12:00:00 AM')::timestamp and (date('2022-05-31') || ' 11:59:00 PM')::timestamp or ticket.resolution_due_on between (date('2022-05-01') || ' 12:00:00 AM')::timestamp and (date('2022-05-31') || ' 11:59:00 PM')::timestamp) 
+
+       and ticket.cf_contract_status in ('Pending Signature') 
+
+     
