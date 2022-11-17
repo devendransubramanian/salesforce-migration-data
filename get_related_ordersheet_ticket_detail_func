@@ -11,6 +11,7 @@ CREATE OR REPLACE FUNCTION public.get_related_ordersheet_ticket_detail(
     ROWS 1000
 
 AS $BODY$
+
 begin
 	return query 
 
@@ -223,8 +224,8 @@ CASE WHEN date_part(''day'', fields."1151" - t.created_on) <= 0.5 THEN ''Same Da
 
 fields."1174"::double precision + fields."1178"::double precision + fields."1182"::double precision + fields."1186"::double precision + fields."1190"::double precision + fields."1192"::double precision + fields."1195"::double precision + fields."1198"::double precision + fields."1204"::double precision + fields."1206"::double precision + fields."1207"::double precision + fields."1210"::double precision as "Annualized Revenue",
 
-CASE WHEN date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) <= 0.5 THEN ''Same Day'' WHEN date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) > 0.5 AND date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) <= 1 THEN ''1 Day'' WHEN date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) > 1 AND date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) <= 2 THEN ''2 Days'' WHEN date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) > 2 AND date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) <= 3 THEN ''3 Days'' WHEN date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) > 3 AND date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) <= 6 THEN ''4 - 6 Days'' WHEN date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) > 6 AND date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) <= 9 THEN ''7 - 9 Days'' ELSE (case when date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) >= 10 then ''10 or More Days'' else null end) END AS "Days To Final CRRB Check",
-date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' then t.resolution_due_on else t.closed_on end)) AS "Close to Final CRRB Checks"
+CASE WHEN fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) <= 0.5 THEN ''Same Day'' WHEN fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) > 0.5 AND fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) <= 1 THEN ''1 Day'' WHEN fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) > 1 AND fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) <= 2 THEN ''2 Days'' WHEN fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) > 2 AND fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) <= 3 THEN ''3 Days'' WHEN fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) > 3 AND fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) <= 6 THEN ''4 - 6 Days'' WHEN fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) > 6 AND fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) <= 9 THEN ''7 - 9 Days'' ELSE (case when fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) >= 10 then ''10 or More Days'' else null end) END AS "Days To Final CRRB Check",
+																													  fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) AS "Close to Final CRRB Checks"
 
 		  
   FROM (select * from ticket_detail where ticket_category_option_id = 4 and id in (%s)) td
@@ -356,9 +357,10 @@ date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' 
 "1156" timestamp,
 "1335" character varying,
 "1522" character varying)
-	  LEFT Join users carrep on carrep.email=fields."1335",
+
+LEFT Join users carrep on carrep.email=fields."1335",
      jsonb_to_record(cg.custom_fields) contactgroup("1083" character varying, "1044" character varying, "1058" boolean, "1079" character varying, "1080" character varying, "1170" bigint, "1291" character varying)
-			  
+			  ,jsonb_to_record(td.custom_fields) fields1("1461" date)
 			   ',ticketid)) as ticket_detail(parentid bigint,id bigint,
  org_id integer,
  brand_id integer,
@@ -558,6 +560,7 @@ date_part(''day'', fields."1461" - (case when tst.label_for_agent != ''Closed'' 
  "Close to Final CRRB Checks" double precision)
  where ticket_detail.id >0 ;
 	end;
+
 $BODY$;
 
 ALTER FUNCTION public.get_related_ordersheet_ticket_detail(character varying)
