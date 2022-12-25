@@ -4,14 +4,13 @@
 
 CREATE OR REPLACE FUNCTION public.get_related_ordersheet_ticket_detail(
 	ticketid character varying)
-    RETURNS TABLE(parentid bigint, id bigint, org_id integer, brand_id integer, org_brand_id integer, brand_name text, "Opportunity Name" text, is_visible_in_customer_portal boolean, requested_by bigint, requester text, assigned_to_user_id bigint, assignee text, "AR Rep" text, assigned_to_group_id integer, "group" text, contact_group_id bigint, contact_group text, resolution_due_on timestamp with time zone, ticket_status_id integer, status text, ticket_source_id integer, source text, update_count integer, note_count integer, attachment_count integer, work_log_count integer, total_time_logged integer, total_billable_time_logged integer, first_response_due_on timestamp with time zone, next_response_due_on timestamp with time zone, last_replied_on timestamp with time zone, last_replied_by_id bigint, last_replied_by text, last_replied_by_user_type_id integer, last_replied_by_user_type text, closed_on timestamp with time zone, closed_by bigint, closed_by_name text, created_on timestamp with time zone, created_by bigint, creator text, last_modified_on timestamp with time zone, last_modified_by bigint, "Last Modified By" text, is_spam boolean, is_active boolean, tsv tsvector, is_resolution_date_modified boolean, last_status_changed_on timestamp with time zone, is_first_response_updated boolean, ticket_type_option_id bigint, ticket_category_option_id bigint, ticket_priority_id integer, priority text, "Account Name" text, subject text, type text, category text, email character varying, "OpportunityOwner" text, time_spent bigint, unique_external_reference_id text, agentid bigint, notes text, isnotesprivate boolean, notetype text, assigned text, cf_car_rep text, cf_cg_billing_postal_code character varying, cf_cg_known_company_url character varying, cf_problematic_pricing_opps boolean, cf_cg_billing_street character varying, cf_cg_billing_city character varying, cf_month_three_amount numeric, cf_month_two_amount numeric, cf_month_one_amount numeric, cf_reseller_amount numeric, cf_bold_referral_partner character varying, cf_crr_split_amount numeric, cf_fee_to_alliance_partner numeric, cf_projectdivision_name character varying, cf_total_sale_amount numeric, cf_include_third_party_contractors character varying, cf_record_type character varying, cf_external_reference_id character varying, cf_order_sheet_status character varying, cf_rejected_to_rep timestamp without time zone, cf_submitted_for_processing timestamp without time zone, cf_crr_corrections_required character varying, cf_crr_rep character varying, cf_returnrebook boolean, cf_special_instructionsnotes character varying, cf_submitted_for_approval timestamp without time zone, cf_visual_compliance_run_by character varying, cf_contract_term character varying, cf_month_six_amount numeric, cf_contract_start_date timestamp without time zone, cf_portal_admin_direct_trac_id_packflat character varying, cf_year_one_fee numeric, cf_month_five_amount numeric, cf_order_sheet_processed timestamp without time zone, cf_month_twelve_amount numeric, cf_month_seven_amount numeric, cf_month_nine_amount numeric, cf_year_eight_fee numeric, cf_year_five_fee numeric, cf_year_four_fee numeric, cf_year_nine_fee numeric, cf_year_seven_fee numeric, cf_year_six_fee numeric, cf_year_three_fee numeric, cf_year_two_fee numeric, cf_month_eleven_amount numeric, cf_payment_frequency character varying, cf_payment_terms character varying, cf_order_id_to_renew character varying, cf_premium_support character varying, cf_sales_admin_correction_requested character varying, cf_tss_support character varying, cf_bold_tenant_id_or_portal_name character varying, cf_stripe_order boolean, cf_account_name character varying, cf_associated_dt_order character varying, cf_current_opportunity_stage character varying, cf_order_visual_compliance_run timestamp without time zone, cf_reseller character varying, cf_order_entered date, cf_verified_return_in_dt boolean, cf_order_sheet_name character varying, cf_upgrade_dollar_amount numeric, cf_portal_admin_country character varying, cf_customer_invoice_details character varying, cf_portal_admin_full_name_packflat character varying, cf_payment_confirmation_attached character varying, cf_alliance_fee_tier character varying, cf_csr_returned_for_correction date, cf_alliance_partner character varying, cf_confirmed_order_csr date, cf_contracted_amount_reseller_orders numeric, cf_application_name character varying, cf_product_1_name character varying, cf_main_project_contact_full_name character varying, cf_month_eight_amount numeric, cf_optional_renewal_years character varying, cf_official_company_name character varying, cf_order_entered_by character varying, cf_end_user_1_direct_trac_id character varying, cf_end_user_4_full_name character varying, cf_end_user_2_full_name character varying, cf_end_user_3_full_name character varying, cf_end_user_5_full_name character varying, cf_end_user_3_direct_trac_id character varying, cf_end_user_2_direct_trac_id character varying, cf_end_user_4_direct_trac_id character varying, cf_end_user_5_direct_trac_id character varying, cf_main_project_contact_direct_trac_id character varying, cf_bill_toap_dt_customer_id character varying, cf_manager character varying, cf_taxvat_id character varying, cf_po_number character varying, cf_enterpriseportal_id character varying, cf_contract_signatory_full_name character varying, cf_contract_signatory_dt_customer_id character varying, cf_sales_rep_split_amount numeric, cf_end_user_1_full_name character varying, cf_payment_method character varying, cf_next_renewal_date timestamp without time zone, cf_is_there_a_reseller_involved character varying, cf_is_this_an_upgrade character varying, cf_license_type character varying, cf_portal_admin_time_zone character varying, cf_bold_commissionable_amount numeric, cf_syncfusion_sales_rep character varying, cf_are_vendor_forms_needed character varying, cf_eventual_monthly_payment numeric, cf_month_four_amount numeric, cf_month_ten_amount numeric, cf_returned_for_corrections timestamp without time zone, "Sales Admin Review Days" double precision, "Close Date to Processed" double precision, "Days to Process" double precision, "Days Since Close Date" double precision, "Days Open" double precision, "Call time" text, "CRRB Processing Time" text, "Days to Process(str)" text, "DT Order Link" text, "Days to Submit Order" double precision, "Days to Submit Order_bucket" text, "Annualized Revenue" double precision, "Days To Final CRRB Check" text, "Close to Final CRRB Checks" double precision) 
+    RETURNS TABLE(parentid bigint, id bigint, org_id integer, brand_id integer, org_brand_id integer, brand_name text, "Opportunity Name" text, is_visible_in_customer_portal boolean, requested_by bigint, requester text, assigned_to_user_id bigint, assignee text, "AR Rep" text, assigned_to_group_id integer, "group" text, contact_group_id bigint, contact_group text, resolution_due_on timestamp with time zone, ticket_status_id integer, status text, ticket_source_id integer, source text, update_count integer, note_count integer, attachment_count integer, work_log_count integer, total_time_logged integer, total_billable_time_logged integer, first_response_due_on timestamp with time zone, next_response_due_on timestamp with time zone, last_replied_on timestamp with time zone, last_replied_by_id bigint, last_replied_by text, last_replied_by_user_type_id integer, last_replied_by_user_type text, closed_on timestamp with time zone, closed_by bigint, closed_by_name text, created_on timestamp with time zone, created_by bigint, creator text, last_modified_on timestamp with time zone, last_modified_by bigint, "Last Modified By" text, is_spam boolean, is_active boolean, tsv tsvector, is_resolution_date_modified boolean, last_status_changed_on timestamp with time zone, is_first_response_updated boolean, ticket_type_option_id bigint, ticket_category_option_id bigint, ticket_priority_id integer, priority text, "Account Name" text, subject text, type text, category text, email character varying, "OpportunityOwner" text, time_spent bigint, unique_external_reference_id text, agentid bigint, notes text, isnotesprivate boolean, notetype text, assigned text, cf_car_rep text, cf_cg_billing_postal_code character varying, cf_cg_known_company_url character varying, cf_problematic_pricing_opps boolean, cf_cg_billing_street character varying, cf_cg_billing_city character varying, cf_month_three_amount numeric, cf_month_two_amount numeric, cf_month_one_amount numeric, cf_reseller_amount numeric, cf_bold_referral_partner character varying, cf_crr_split_amount numeric, cf_fee_to_alliance_partner numeric, cf_projectdivision_name character varying, cf_total_sale_amount numeric, cf_include_third_party_contractors character varying, cf_record_type character varying, cf_external_reference_id character varying, cf_order_sheet_status character varying, cf_rejected_to_rep timestamp with time zone, cf_submitted_for_processing timestamp with time zone, cf_crr_corrections_required character varying, cf_crr_rep character varying, cf_returnrebook boolean, cf_special_instructionsnotes character varying, cf_submitted_for_approval timestamp with time zone, cf_visual_compliance_run_by character varying, cf_contract_term character varying, cf_month_six_amount numeric, cf_contract_start_date timestamp without time zone, cf_portal_admin_direct_trac_id_packflat character varying, cf_year_one_fee numeric, cf_month_five_amount numeric, cf_order_sheet_processed timestamp with time zone, cf_month_twelve_amount numeric, cf_month_seven_amount numeric, cf_month_nine_amount numeric, cf_year_eight_fee numeric, cf_year_five_fee numeric, cf_year_four_fee numeric, cf_year_nine_fee numeric, cf_year_seven_fee numeric, cf_year_six_fee numeric, cf_year_three_fee numeric, cf_year_two_fee numeric, cf_month_eleven_amount numeric, cf_payment_frequency character varying, cf_payment_terms character varying, cf_order_id_to_renew character varying, cf_premium_support character varying, cf_sales_admin_correction_requested character varying, cf_tss_support character varying, cf_bold_tenant_id_or_portal_name character varying, cf_stripe_order boolean, cf_account_name character varying, cf_associated_dt_order character varying, cf_current_opportunity_stage character varying, cf_order_visual_compliance_run timestamp without time zone, cf_reseller character varying, cf_order_entered date, cf_verified_return_in_dt boolean, cf_order_sheet_name character varying, cf_upgrade_dollar_amount numeric, cf_portal_admin_country character varying, cf_customer_invoice_details character varying, cf_portal_admin_full_name_packflat character varying, cf_payment_confirmation_attached character varying, cf_alliance_fee_tier character varying, cf_csr_returned_for_correction date, cf_alliance_partner character varying, cf_confirmed_order_csr date, cf_contracted_amount_reseller_orders numeric, cf_application_name character varying, cf_product_1_name character varying, cf_main_project_contact_full_name character varying, cf_month_eight_amount numeric, cf_optional_renewal_years character varying, cf_official_company_name character varying, cf_order_entered_by character varying, cf_end_user_1_direct_trac_id character varying, cf_end_user_4_full_name character varying, cf_end_user_2_full_name character varying, cf_end_user_3_full_name character varying, cf_end_user_5_full_name character varying, cf_end_user_3_direct_trac_id character varying, cf_end_user_2_direct_trac_id character varying, cf_end_user_4_direct_trac_id character varying, cf_end_user_5_direct_trac_id character varying, cf_main_project_contact_direct_trac_id character varying, cf_bill_toap_dt_customer_id character varying, cf_manager character varying, cf_taxvat_id character varying, cf_po_number character varying, cf_enterpriseportal_id character varying, cf_contract_signatory_full_name character varying, cf_contract_signatory_dt_customer_id character varying, cf_sales_rep_split_amount numeric, cf_end_user_1_full_name character varying, cf_payment_method character varying, cf_next_renewal_date timestamp without time zone, cf_is_there_a_reseller_involved character varying, cf_is_this_an_upgrade character varying, cf_license_type character varying, cf_portal_admin_time_zone character varying, cf_bold_commissionable_amount numeric, cf_syncfusion_sales_rep character varying, cf_are_vendor_forms_needed character varying, cf_eventual_monthly_payment numeric, cf_month_four_amount numeric, cf_month_ten_amount numeric, cf_returned_for_corrections timestamp with time zone, "Sales Admin Review Days" double precision, "Close Date to Processed" double precision, "Days to Process" double precision, "Days Since Close Date" double precision, "Days Open" double precision, "Call time" text, "CRRB Processing Time" text, "Days to Process(str)" text, "DT Order Link" text, "Days to Submit Order" double precision, "Days to Submit Order_bucket" text, "Annualized Revenue" double precision, "Days To Final CRRB Check" text, "Close to Final CRRB Checks" double precision) 
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
     ROWS 1000
 
 AS $BODY$
-
 begin
 	return query 
 
@@ -228,10 +227,10 @@ CASE WHEN fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then da
 																													  fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then date(td.resolution_due_on) else date(td.closed_on) end ) AS "Close to Final CRRB Checks"
 
 		  
-  FROM (select * from ticket_detail where ticket_category_option_id = 4 and id in (%s)) td
-     LEFT JOIN ticket_link tl ON tl.destination_ticket_id = td.id AND tl.ticket_link_type_id = 1 and  tl.is_Active=true
-     LEFT JOIN ticket_detail t ON t.id = tl.source_ticket_id and t.ticket_category_option_id = 3617 and t.is_active=true
-     LEFT JOIN brand b ON b.org_brand_id = t.org_brand_id
+  FROM (select * from ticket_detail where ticket_category_option_id = 3617 and id in (%s) and is_Active=true ) t
+     LEFT JOIN ticket_link tl ON (tl.destination_ticket_id = t.id or tl.source_ticket_id = t.id) AND tl.ticket_link_type_id = 1 and  tl.is_Active=true
+     LEFT JOIN ticket_detail td ON (td.id = tl.source_ticket_id  or td.id = tl.destination_ticket_id) and td.ticket_category_option_id = 4 and t.is_active=true
+       LEFT JOIN brand b ON b.org_brand_id = t.org_brand_id
      LEFT JOIN ticket_status tst ON tst.id = t.ticket_status_id
      LEFT JOIN ticket_status tst1 ON tst1.id = td.ticket_status_id
      LEFT JOIN ticket_source tso ON tso.id = t.ticket_source_id
@@ -263,13 +262,13 @@ CASE WHEN fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then da
 "1046" bigint,
 "1329" varchar,
 "1141" bigint,
-"1155" timestamp,
-"1153" timestamp,
+"1155" timestamp with time zone,
+"1153" timestamp with time zone ,
 "1146" varchar,
 "1145" bigint,
 "1147" boolean,
 "1150" varchar,
-"1151" timestamp,
+"1151" timestamp with time zone,
 "1144" bigint,
 "1191" bigint,
 "1192" decimal(36,6),
@@ -277,7 +276,7 @@ CASE WHEN fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then da
 "1573" varchar,
 "1194" decimal(36,6),
 "1190" decimal(36,6),
-"1160" timestamp,
+"1160" timestamp with time zone,
 "1210" decimal(36,6),
 "1195" decimal(36,6),
 "1204" decimal(36,6),
@@ -354,14 +353,15 @@ CASE WHEN fields1."1461" - (case when tst1.label_for_agent != ''Closed'' then da
 "1213" decimal(36,6),
 "1186" decimal(36,6),
 "1206" decimal(36,6),
-"1156" timestamp,
+"1156" timestamp with time zone,
 "1335" character varying,
 "1522" character varying)
 
 LEFT Join users carrep on carrep.email=fields."1335",
      jsonb_to_record(cg.custom_fields) contactgroup("1083" character varying, "1044" character varying, "1058" boolean, "1079" character varying, "1080" character varying, "1170" bigint, "1291" character varying)
 			  ,jsonb_to_record(td.custom_fields) fields1("1461" date)
-			   ',ticketid)) as ticket_detail(parentid bigint,id bigint,
+  where  td.id >0
+																													  ',ticketid)) as ticket_detail(parentid bigint,id bigint,
  org_id integer,
  brand_id integer,
  org_brand_id integer,
@@ -446,13 +446,13 @@ LEFT Join users carrep on carrep.email=fields."1335",
 "cf_record_type" varchar,
 "cf_external_reference_id" varchar,
 "cf_order_sheet_status" varchar,
-"cf_rejected_to_rep" timestamp,
-"cf_submitted_for_processing" timestamp,
+"cf_rejected_to_rep" timestamp with time zone,
+"cf_submitted_for_processing" timestamp with time zone,
 "cf_crr_corrections_required" varchar,
 "cf_crr_rep" varchar,
 "cf_returnrebook" boolean,
 "cf_special_instructionsnotes" varchar,
-"cf_submitted_for_approval" timestamp,
+"cf_submitted_for_approval" timestamp with time zone,
 "cf_visual_compliance_run_by" varchar,
 "cf_contract_term" varchar,
 "cf_month_six_amount" decimal(36,6),
@@ -460,7 +460,7 @@ LEFT Join users carrep on carrep.email=fields."1335",
 "cf_portal_admin_direct_trac_id_packflat" varchar,
 "cf_year_one_fee" decimal(36,6),
 "cf_month_five_amount" decimal(36,6),
-"cf_order_sheet_processed" timestamp,
+"cf_order_sheet_processed" timestamp with time zone,
 "cf_month_twelve_amount" decimal(36,6),
 "cf_month_seven_amount" decimal(36,6),
 "cf_month_nine_amount" decimal(36,6),
@@ -537,7 +537,7 @@ LEFT Join users carrep on carrep.email=fields."1335",
 "cf_eventual_monthly_payment" decimal(36,6),
 "cf_month_four_amount" decimal(36,6),
 "cf_month_ten_amount" decimal(36,6),
-"cf_returned_for_corrections" timestamp,
+"cf_returned_for_corrections" timestamp with time zone,
   "Sales Admin Review Days" double precision,
  "Close Date to Processed" double precision,
  "Days to Process" double precision,
@@ -557,10 +557,8 @@ LEFT Join users carrep on carrep.email=fields."1335",
  "Days to Submit Order_bucket" text,
  "Annualized Revenue" double precision,
 											"Days To Final CRRB Check"  text,
- "Close to Final CRRB Checks" double precision)
- where ticket_detail.id >0 ;
+ "Close to Final CRRB Checks" double precision);
 	end;
-
 $BODY$;
 
 ALTER FUNCTION public.get_related_ordersheet_ticket_detail(character varying)
