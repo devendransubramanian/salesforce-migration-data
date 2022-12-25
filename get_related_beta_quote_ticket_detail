@@ -109,9 +109,9 @@ td.cf_email_subject
 
  FROM dblink('host=35.236.243.204 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538'::text,
 											 format( '
-select td.id as parentid,t.id FROM (select * from ticket_detail where  id in (%s) and is_active=true) td
-     LEFT JOIN ticket_link tl ON tl.destination_ticket_id = td.id AND tl.ticket_link_type_id = 1 and tl.is_active=true
-     LEFT JOIN ticket_detail t ON t.id = tl.source_ticket_id and t.ticket_category_option_id = 5 and t.is_active=true
+select td.id as parentid,t.id FROM (select * from ticket_detail where  ticket_category_option_id not in (5) and id in (%s) and is_active=true) td
+     LEFT JOIN ticket_link tl ON (tl.destination_ticket_id = td.id or  tl.source_ticket_id = td.id) AND tl.ticket_link_type_id = 1 and tl.is_active=true
+     LEFT JOIN ticket_detail t ON (t.id = tl.source_ticket_id or t.id = tl.destination_ticket_id) and t.ticket_category_option_id = 5 and t.is_active=true
 where t.id>0
 											  ',ticketid) ) as ticket(parentid bigint,id bigint)
 LEFT Join ticket_DEtail td on td.id=ticket.id ;
