@@ -11,6 +11,7 @@ CREATE OR REPLACE FUNCTION public.get_related_childactiviescallemail_ticket_deta
     ROWS 1000
 
 AS $BODY$
+
 begin
 	return query 
 
@@ -46,6 +47,7 @@ tu.created_on,tag.name as tagname
 --) role on ticket.assigned = role.name
 ;
 	end;
+
 $BODY$;
 
 ALTER FUNCTION public.get_related_childactiviescallemail_ticket_detail(character varying)
