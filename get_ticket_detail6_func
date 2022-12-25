@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION public.get_ticket_detail6(
 	ticketid character varying)
-    RETURNS TABLE(id bigint, cf_pending_gdpr_deletion character varying, cf_payment_profileid character varying, cf_no_sales_contact_date character varying, cf_type character varying, cf_contact_secondary_lead_source character varying, cf_customer_profile_url character varying, cf_billing_country character varying, cf_mailing_country character varying, cf_contact_comments character varying, cf_customer_profileid character varying, cf_contact_lead_category character varying, cf_days_support_remaining numeric, cf_time_zone character varying, cf_timeline_needed character varying, cf_project_notes character varying, cf_support_end_date timestamp without time zone, cf_project_hourly_rate numeric, cf_dedicated_resource_rate numeric, cf_number_of_dedicated_resources numeric, cf_dedicated_hours_details character varying, cf_project_name character varying, cf_dt_incident_id character varying, cf_removal_letter_sent timestamp without time zone, cf_cases_date_return_created timestamp without time zone, cf_cs_rep character varying, cf_tss_manager character varying, cf_order_portal_admin_time_zone character varying, cf_bold_desk_links character varying, description character varying, cf_resolution_description character varying, cf_case_boldbi_tenant_id character varying, cf_reg_meeting_scheduled character varying, cf_quote_line_items character varying, cf_quote_number bigint, cf_expiration_date timestamp without time zone, cf_order_form_for character varying, cf_net_amount numeric, cf_tax numeric, cf_grand_total numeric, cf_quote_name character varying, cf_bq_email character varying, cf_phone character varying, cf_fax character varying, cf_bq_status character varying, cf_contact_name character varying, cf_bill_to_name character varying, cf_ship_to_name character varying, cf_bq_billing_street character varying, cf_bq_billing_city character varying, cf_bq_billing_state character varying, cf_bq_billing_country character varying, cf_bq_billing_postal_code character varying, cf_bq_shipping_street character varying, cf_bq_shipping_city character varying, cf_bq_shipping_state character varying, cf_shipping_country character varying, cf_shipping_postal_code character varying, cf_engagement_origin_field character varying, cf_1st_contact_method character varying, cf_2nd_contact_method character varying, cf_3rd_contact_method character varying, cf_review_invoice_paid timestamp without time zone, cf_contact_email character varying, cf_lead_email character varying, cf_control character varying, cf_marketing_notes character varying, cf_link_to_previous_record character varying, cf_case_study_link character varying, cf_review_confirmed timestamp without time zone, cf_review_invoiced timestamp without time zone, cf_business_program character varying, cf_website character varying, cf_no_sales_contact_customers character varying, cf_about_this_contact character varying, cf_client_download_country character varying, cf_interaction_type character varying, cf_client_boldbi_tenant_id character varying, cf_client_success_type character varying, cf_interaction_status character varying, cf_next_cs_followup date, cf_last_contact_cs date, cf_project_name_cst character varying, cf_license_status character varying, cf_lead_sources character varying, cf_client_secondary_lead_source character varying, cf_client_opportunity_source character varying, cf_client_secondary_opportunity_source character varying, cf_lead_category character varying, cf_ld_lead_source character varying, cf_ld_secondary_lead_source character varying, cf_lead_status character varying, cf_closed_to_contract_sent numeric, cf_company_name character varying, cf_contract_license_type character varying, cf_name_of_projectdivision character varying, cf_price_year_oneterm_one_amount numeric, cf_net_terms character varying, cf_payment_type character varying, cf_renewal_terms_any_optional character varying, cf_are_3rd_parties_included character varying, cf_user_count_limited_how_many character varying, cf_any_special_terms_details character varying, cf_boldsign_exp_date date, cf_product_1_name character varying, cf_eventual_monthly_payment numeric) 
+    RETURNS TABLE(id bigint, cf_pending_gdpr_deletion character varying, cf_payment_profileid character varying, cf_no_sales_contact_date character varying, cf_type character varying, cf_contact_secondary_lead_source character varying, cf_customer_profile_url character varying, cf_billing_country character varying, cf_mailing_country character varying, cf_contact_comments character varying, cf_customer_profileid character varying, cf_contact_lead_category character varying, cf_days_support_remaining numeric, cf_time_zone character varying, cf_timeline_needed character varying, cf_project_notes character varying, cf_support_end_date timestamp without time zone, cf_project_hourly_rate numeric, cf_dedicated_resource_rate numeric, cf_number_of_dedicated_resources numeric, cf_dedicated_hours_details character varying, cf_project_name character varying, cf_dt_incident_id character varying, cf_removal_letter_sent timestamp without time zone, cf_cases_date_return_created timestamp without time zone, cf_cs_rep character varying, cf_tss_manager character varying, cf_order_portal_admin_time_zone character varying, cf_bold_desk_links character varying, description character varying, cf_resolution_description character varying, cf_case_boldbi_tenant_id character varying, cf_reg_meeting_scheduled character varying, cf_quote_line_items character varying, cf_quote_number bigint, cf_expiration_date timestamp without time zone, cf_order_form_for character varying, cf_net_amount numeric, cf_tax numeric, cf_grand_total numeric, cf_quote_name character varying, cf_bq_email character varying, cf_phone character varying, cf_fax character varying, cf_bq_status character varying, cf_contact_name character varying, cf_bill_to_name character varying, cf_ship_to_name character varying, cf_bq_billing_street character varying, cf_bq_billing_city character varying, cf_bq_billing_state character varying, cf_bq_billing_country character varying, cf_bq_billing_postal_code character varying, cf_bq_shipping_street character varying, cf_bq_shipping_city character varying, cf_bq_shipping_state character varying, cf_shipping_country character varying, cf_shipping_postal_code character varying, cf_engagement_origin_field character varying, cf_1st_contact_method character varying, cf_2nd_contact_method character varying, cf_3rd_contact_method character varying, cf_review_invoice_paid timestamp without time zone, cf_contact_email character varying, cf_lead_email character varying, cf_control character varying, cf_marketing_notes character varying, cf_link_to_previous_record character varying, cf_case_study_link character varying, cf_review_confirmed timestamp without time zone, cf_review_invoiced timestamp without time zone, cf_business_program character varying, cf_website character varying, cf_no_sales_contact_customers character varying, cf_about_this_contact character varying, cf_client_download_country character varying, cf_interaction_type character varying, cf_client_boldbi_tenant_id character varying, cf_client_success_type character varying, cf_interaction_status character varying, cf_next_cs_followup date, cf_last_contact_cs date, cf_project_name_cst character varying, cf_license_status character varying, cf_lead_sources character varying, cf_client_secondary_lead_source character varying, cf_client_opportunity_source character varying, cf_client_secondary_opportunity_source character varying, cf_lead_category character varying, cf_ld_lead_source character varying, cf_ld_secondary_lead_source character varying, cf_lead_status character varying, cf_closed_to_contract_sent numeric, cf_company_name character varying, cf_contract_license_type character varying, cf_name_of_projectdivision character varying, cf_price_year_oneterm_one_amount numeric, cf_net_terms character varying, cf_payment_type character varying, cf_renewal_terms_any_optional character varying, cf_are_3rd_parties_included character varying, cf_user_count_limited_how_many character varying, cf_any_special_terms_details character varying, cf_boldsign_exp_date date, cf_product_1_name character varying, cf_eventual_monthly_payment numeric, cf_renewal_contact_name character varying, cf_renewal_contact_email character varying, cf_date_return_created timestamp with time zone) 
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
@@ -121,7 +121,10 @@ ticket_detail.cf_user_count_limited_how_many,
 ticket_detail.cf_any_special_terms_details,
 ticket_detail.cf_boldsign_exp_date,
 ticket_detail.cf_product_1_name,
-ticket_detail."cf_eventual_monthly_payment"
+ticket_detail."cf_eventual_monthly_payment",
+ticket_detail.cf_renewal_contact_name,
+ticket_detail.cf_renewal_contact_email,
+ticket_DEtail.cf_date_return_created
    FROM dblink('host=35.236.243.204 port=5432 user=salesopreaduser password=b9c!l9M4#zQ dbname=org-538'::text, 
 			   
 			   format('SELECT t.id,
@@ -230,7 +233,10 @@ fields."1612"  as "cf_bq_shipping_state",
 fields."1613"  as "cf_shipping_country",
 fields."1614"  as "cf_shipping_postal_code"		 ,
 ( SELECT field_option.option_value FROM field_option WHERE field_option.id = fields."1235") as "cf_product_1_name",
-fields."1213"  as "cf_eventual_monthly_payment" 
+fields."1213"  as "cf_eventual_monthly_payment" ,
+					  fields."1375" AS cf_renewal_contact_name,
+	fields."1374" as cf_renewal_contact_email,
+					  fields."1303" as cf_date_return_created
    FROM (select * from ticket_detail where  id in (%s) and is_active=true ) t
      LEFT JOIN brand b ON b.org_brand_id = t.org_brand_id
      LEFT JOIN ticket_status tst ON tst.id = t.ticket_status_id
@@ -438,7 +444,8 @@ fields."1213"  as "cf_eventual_monthly_payment"
 "1613" varchar,
 "1614" varchar,
 "1235" bigint,
-"1213" decimal(36,6))
+"1213" decimal(36,6),
+					 "1375" varchar,"1374" varchar,"1303" timestamp with time zone)
 	  LEFT Join users carrep on carrep.email=fields."1335",
      jsonb_to_record(cg.custom_fields) contactgroup("1083" character varying, "1044" character varying, "1058" boolean, "1079" character varying, "1080" character varying, "1170" bigint, "1291" character varying)
 			  ,jsonb_to_record(requester.custom_fields) contact("1626" varchar,
@@ -592,7 +599,10 @@ fields."1213"  as "cf_eventual_monthly_payment"
 "cf_shipping_country" varchar,
 "cf_shipping_postal_code" varchar,
 "cf_product_1_name" varchar,
-"cf_eventual_monthly_payment" decimal(36,6))
+"cf_eventual_monthly_payment" decimal(36,6),
+			   cf_renewal_contact_name varchar,
+				  cf_renewal_contact_email varchar,
+			   cf_date_return_created timestamp with time zone)
  ;
 
 	end;
