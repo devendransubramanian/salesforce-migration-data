@@ -39,14 +39,15 @@ tnotes.cf_external_reference_id
 td.id as parentid,
 t.id,
  fields."1590" as "cf_task_name"
-  FROM (select * from ticket_detail where   id in ( %s) and is_active=true ) td
-    LEFT JOIN ticket_link tl ON tl.destination_ticket_id = td.id AND tl.ticket_link_type_id = 1 and tl.is_Active=true
-     LEFT JOIN ticket_detail t ON t.id = tl.source_ticket_id  and t.ticket_category_option_id=2459 and t.is_active =true
+  FROM (select * from ticket_detail where ticket_category_option_id not in (2459) and   id in ( %s) and is_active=true ) td
+    LEFT JOIN ticket_link tl ON (tl.destination_ticket_id = td.id or tl.source_ticket_id = td.id ) AND tl.ticket_link_type_id = 1 and tl.is_Active=true
+     LEFT JOIN ticket_detail t ON (t.id = tl.source_ticket_id or t.id = tl.destination_ticket_id)  and t.ticket_category_option_id=2459 and t.is_active =true
  	 , jsonb_to_record(t.custom_fields) as fields( "1590" varchar)
+where t.id>0
 			   ',ticketid)) as ticket_detail(parentid bigint,id bigint,"cf_task_name" varchar)
-     LEFT JOIN ticket_detail tnotes ON tnotes.id = ticket_detail.id
+     LEFT JOIN ticket_detail tnotes ON tnotes.id = ticket_detail.id;
    
-where ticket_detail.id>0 ;
+
 	end;
 
 $BODY$;
