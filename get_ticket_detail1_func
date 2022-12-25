@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION public.get_ticket_detail1(
 	ticketid character varying)
-    RETURNS TABLE(id bigint, cf_tier_1_country_code character varying, cf_renewal_status text, cf_renewal_confirmation text, cf_contract_reviewed text, cf_reason_returned text, cf_resolution text, cf_po_obtained_legal timestamp without time zone, cf_contact_lead_source character varying, cf_salescrr_issue_resolved timestamp without time zone, cf_primary_ap_contact character varying, cf_visual_compliance_run_by text, cf_crr_rep text, cf_crr_corrections_required character varying, cf_returnrebook boolean, cf_payment_confirmation_attached text, cf_tier_1_country_name character varying, cf_1st_contact_date timestamp without time zone, cf_email character varying, cf_submitted_for_processing timestamp without time zone, cf_rejected_to_rep timestamp without time zone, cf_returned_for_corrections timestamp without time zone, cf_order_sheet_processed timestamp without time zone, cf_record_type text, cf_upgrade_dollar_amount numeric, cf_total_sale_amount numeric, cf_month_one_amount numeric, cf_month_two_amount numeric, cf_month_three_amount numeric, cf_month_four_amount numeric, cf_month_five_amount numeric, cf_month_six_amount numeric, cf_month_seven_amount numeric, cf_month_eight_amount numeric, cf_month_nine_amount numeric, cf_month_ten_amount numeric, cf_month_eleven_amount numeric, cf_month_twelve_amount numeric, cf_fee_to_alliance_partner numeric, cf_contract_status text, cf_3rd_contact_date timestamp without time zone, cf_payment_method text, cf_bold_commissionable_amount numeric, cf_customer_invoice_details text, cf_stripe_order boolean, cf_year_one_contract_amount numeric, cf_case_resolution text, cf_sales_admin_correction_requested character varying, cf_date_agreement_effective timestamp without time zone, cf_date_agreement_expires date, cf_date_sent_to_customer timestamp without time zone, cf_date_estimate_sent_to_customer timestamp without time zone, cf_date_signed_by_customer timestamp without time zone, cf_case_car_rep character varying, cf_crr_split_amount numeric, cf_follow_up_date timestamp without time zone, cf_outstanding_amount numeric, cf_amount_collected_by_legal numeric, cf_payment_outcome text, cf_invoice_sent timestamp without time zone, cf_contract_complete_or_closed timestamp without time zone, cf_reason_for_no_contract character varying, cf_payment_obtained_legal timestamp without time zone, cf_review_site text, cf_order_info_needed integer[], cf_collection_legal_status text, cf_last_collections_contact timestamp without time zone, cf_total_invoice_amount numeric, cf_salescr_action_type text, cf_case_description character varying, cf_date_sent_to_jv timestamp without time zone, cf_date_fully_executed timestamp without time zone, cf_90_days_support timestamp without time zone, cf_weekly_call_day text, cf_last_ar_contact timestamp without time zone, cf_related_opp_account_name character varying, cf_related_opp_close_date timestamp without time zone, cf_on_hold_details character varying) 
+    RETURNS TABLE(id bigint, cf_tier_1_country_code character varying, cf_renewal_status text, cf_renewal_confirmation text, cf_contract_reviewed text, cf_reason_returned text, cf_resolution text, cf_po_obtained_legal timestamp without time zone, cf_contact_lead_source character varying, cf_salescrr_issue_resolved timestamp without time zone, cf_primary_ap_contact character varying, cf_visual_compliance_run_by text, cf_crr_rep text, cf_crr_corrections_required character varying, cf_returnrebook boolean, cf_payment_confirmation_attached text, cf_tier_1_country_name integer, cf_1st_contact_date timestamp without time zone, cf_email character varying, cf_submitted_for_processing timestamp without time zone, cf_rejected_to_rep timestamp without time zone, cf_returned_for_corrections timestamp without time zone, cf_order_sheet_processed timestamp without time zone, cf_record_type text, cf_upgrade_dollar_amount numeric, cf_total_sale_amount numeric, cf_month_one_amount numeric, cf_month_two_amount numeric, cf_month_three_amount numeric, cf_month_four_amount numeric, cf_month_five_amount numeric, cf_month_six_amount numeric, cf_month_seven_amount numeric, cf_month_eight_amount numeric, cf_month_nine_amount numeric, cf_month_ten_amount numeric, cf_month_eleven_amount numeric, cf_month_twelve_amount numeric, cf_fee_to_alliance_partner numeric, cf_contract_status text, cf_3rd_contact_date timestamp without time zone, cf_payment_method text, cf_bold_commissionable_amount numeric, cf_customer_invoice_details text, cf_stripe_order boolean, cf_year_one_contract_amount numeric, cf_case_resolution text, cf_sales_admin_correction_requested character varying, cf_date_agreement_effective timestamp without time zone, cf_date_agreement_expires date, cf_date_sent_to_customer timestamp without time zone, cf_date_estimate_sent_to_customer timestamp without time zone, cf_date_signed_by_customer timestamp without time zone, cf_case_car_rep character varying, cf_crr_split_amount numeric, cf_follow_up_date timestamp without time zone, cf_outstanding_amount numeric, cf_amount_collected_by_legal numeric, cf_payment_outcome text, cf_invoice_sent timestamp without time zone, cf_contract_complete_or_closed timestamp without time zone, cf_reason_for_no_contract character varying, cf_payment_obtained_legal timestamp without time zone, cf_review_site text, cf_order_info_needed character varying, cf_collection_legal_status text, cf_last_collections_contact timestamp without time zone, cf_total_invoice_amount numeric, cf_salescr_action_type text, cf_case_description character varying, cf_date_sent_to_jv timestamp without time zone, cf_date_fully_executed timestamp without time zone, cf_90_days_support timestamp without time zone, cf_weekly_call_day text, cf_last_ar_contact timestamp without time zone, cf_related_opp_account_name character varying, cf_related_opp_close_date timestamp without time zone, cf_on_hold_details character varying) 
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
@@ -130,7 +130,7 @@ SELECT ticket_detail.id,
     ( SELECT field_option.option_value
            FROM field_option
           WHERE field_option.id = fields."1149") AS cf_payment_confirmation_attached,
-    fields."1048" AS cf_tier_1_country_name,
+    (case when fields."1048" is null or fields."1048" = ''0'' then 0 else 1 end) AS cf_tier_1_country_name,
     fields."1382" AS cf_1st_contact_date,
     fields."1137" AS cf_email,
     fields."1153" AS cf_submitted_for_processing,
@@ -205,7 +205,9 @@ fields."1210" as cf_month_twelve_amount,
     ( SELECT field_option.option_value
            FROM field_option
           WHERE field_option.id = fields."1399") AS cf_review_site,
-    fields."1334" AS cf_order_info_needed,
+    ( SELECT array_to_string(array_agg(field_option.option_value),'';'')
+           FROM field_option
+          WHERE field_option.id = ANY(fields."1334") limit 1) AS cf_order_info_needed,
     ( SELECT field_option.option_value
            FROM field_option
           WHERE field_option.id = fields."1317") AS cf_collection_legal_status,
@@ -528,7 +530,7 @@ fields."1210" as cf_month_twelve_amount,
  cf_crr_corrections_required character varying,
  cf_returnrebook boolean,
  cf_payment_confirmation_attached text,
- cf_tier_1_country_name character varying,
+ cf_tier_1_country_name integer,
  cf_1st_contact_date timestamp without time zone,
  cf_email character varying,
  cf_submitted_for_processing timestamp without time zone,
@@ -576,7 +578,7 @@ fields."1210" as cf_month_twelve_amount,
  cf_reason_for_no_contract character varying,
  cf_payment_obtained_legal timestamp without time zone,
  cf_review_site text,
- cf_order_info_needed integer[],
+ cf_order_info_needed varchar,
  cf_collection_legal_status text,
  cf_last_collections_contact timestamp without time zone,
  cf_total_invoice_amount numeric(36,6),
